@@ -22,6 +22,18 @@ func Case(c string) Option {
 	}
 }
 
+func Prefix(pre string) Option {
+	return func(fn *FileName) {
+		fn.Prefix = pre
+	}
+}
+
+func Suffix(suf string) Option {
+	return func(fn *FileName) {
+		fn.Suffix = suf
+	}
+}
+
 func Join(s string) Option {
 	return func(fn *FileName) {
 		fn.Base = casing.Join(fn.Split, s)
