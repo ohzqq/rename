@@ -3,7 +3,6 @@ package rename
 import (
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	"github.com/danielgtaylor/casing"
 )
@@ -75,13 +74,6 @@ func (name *Name) Rename(trans ...casing.TransformFunc) string {
 
 	return n
 }
-
-var nameTmpl = template.Must(template.New("name").Parse(`
-{{- with .Prefix }}{{.}}{{end -}}
-{{- with .NewName }}{{.}}{{end -}}
-{{- with .Suffix }}{{.}}{{end -}}
-{{- with .Ext }}{{.}}{{end -}}
-`))
 
 //go:generate stringer -type Casing
 type Casing int

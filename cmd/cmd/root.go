@@ -37,6 +37,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
 	rootCmd.PersistentFlags().IntVar(&batch.Max, "max", -1, "end num for enumeration")
 	rootCmd.PersistentFlags().BoolVarP(&batch.Pad, "pad", "p", false, "zero pad files")
+	rootCmd.PersistentFlags().BoolVarP(&batch.Sanitize, "sanitize", "z", false, "asiify and remove characters")
 }
 
 func ValidateArgs(args []string) *rename.Batch {

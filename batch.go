@@ -16,7 +16,7 @@ type Batch struct {
 	Min         int
 	Max         int
 	Pad         bool
-	Padding     string
+	PadFmt      string
 	Sanitize    bool
 }
 
@@ -26,7 +26,7 @@ func Rename() *Batch {
 		Case:        -1,
 		Min:         1,
 		Sep:         "",
-		Padding:     "%03d",
+		PadFmt:      "%03d",
 	}
 	return name
 }
@@ -53,7 +53,7 @@ func (b *Batch) Rename(trans ...casing.TransformFunc) {
 		file.Sep(b.Sep)
 		name := file.Rename(trans...)
 		if b.Pad {
-			name = Pad(name, b.Padding, num, b.PadPosition)
+			name = Pad(name, b.PadFmt, num, b.PadPosition)
 			num++
 		}
 		fmt.Printf("%s%s\n", name, file.Ext)

@@ -33,6 +33,10 @@ func Asciiify(s string) string {
 	return strings.Join(ascii, "")
 }
 
+func Sanitize(s string) string {
+	return casing.Join(casing.Split(strings.TrimSpace(s)), "", Asciiify)
+}
+
 func Pad(in string, pFmt string, num int, pos PadPosition) string {
 	switch pos {
 	case PosStart, PosBeforeName:
