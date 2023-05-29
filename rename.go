@@ -23,7 +23,7 @@ type FileName struct {
 	Replace      string
 	Split        []string
 	PadPosition  PadPosition
-	Case         Case
+	Case         Casing
 	Pad          bool
 	Sanitize     bool
 	Cwd          bool
@@ -34,8 +34,6 @@ type FileName struct {
 	Min          int
 	Max          int
 }
-
-type RenameOpt func(*FileName)
 
 func Rename() *FileName {
 	name := &FileName{
@@ -66,13 +64,19 @@ func (fn *FileName) Parse(n string) error {
 	fn.Ext = filepath.Ext(n)
 	fn.Base = strings.TrimSuffix(fn.name, fn.Ext)
 	fn.Split = casing.Split(fn.Base)
+	fn.NewName = n
 	return nil
 }
 
-func (name FileName) Format(opts ...RenameOpt) (string, error) {
+func (name *FileName) Format(opts ...Option) (string, error) {
 	if name.name == name.NewName {
 		return "", fmt.Errorf("old name (%s) is the same as new name (%s)\n", name.name, name.NewName)
 	}
+
+	for _, opt := range opts {
+		opt(name)
+	}
+	name.NewName = name.Base
 
 	var buf bytes.Buffer
 	err := nameTmpl.Execute(&buf, name)
@@ -85,11 +89,9 @@ func (name FileName) Format(opts ...RenameOpt) (string, error) {
 var nameTmpl = template.Must(template.New("name").Parse(`
 {{- if eq .PadPosition 0}}{{ printf .Padding .Num }}{{end -}}
 {{- with .Prefix }}{{.}}{{end -}}
-{{- with .Sep }}{{.}}{{end -}}
 {{- if eq .PadPosition 1}}{{ printf .Padding .Num }}{{end -}}
 {{- with .NewName }}{{.}}{{end -}}
 {{- if eq .PadPosition 2}}{{ printf .Padding .Num }}{{end -}}
-{{- with .Sep }}{{.}}{{end -}}
 {{- with .Suffix }}{{.}}{{end -}}
 {{- if eq .PadPosition 4}}{{ printf .Padding .Num }}{{end -}}
 {{- with .Ext }}{{.}}{{end -}}
@@ -105,11 +107,11 @@ const (
 	PadPosEnd
 )
 
-//go:generate stringer -type Case
-type Case int
+//go:generate stringer -type Casing
+type Casing int
 
 const (
-	Camel Case = iota
+	Camel Casing = iota
 	Kebab
 	LowerCamel
 	Snake

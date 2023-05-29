@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"github.com/gosimple/unidecode"
 	"github.com/ohzqq/rename"
 	"github.com/spf13/cobra"
 )
@@ -15,8 +14,7 @@ var sanitizeCmd = &cobra.Command{
 		files := ValidateArgs(args)
 		for _, file := range files {
 			name := rename.New(file)
-			n := unidecode.Unidecode(name.Base)
-			nN, err := name.Format()
+			nN, err := name.Format(rename.Ascii(), rename.Join(NameSep))
 			if err != nil {
 				panic(err)
 			}
