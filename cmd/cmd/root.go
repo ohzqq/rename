@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 
@@ -33,11 +34,11 @@ func init() {
 func ValidateArgs(args []string) []string {
 	switch len(args) {
 	case 0:
-		panic("requires either a glob or list of files")
+		log.Fatal("requires either a glob or list of files")
 	case 1:
 		files, err := filepath.Glob(args[0])
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		return files
 	default:

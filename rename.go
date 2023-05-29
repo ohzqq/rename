@@ -1,20 +1,19 @@
-package yyutils
+package rename
 
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
 
 	"github.com/danielgtaylor/casing"
-	"github.com/gosimple/unidecode"
 )
 
 type FileName struct {
 	Ext          string
 	name         string
+	dir          string
 	Base         string
 	Padding      string
 	Sep          string
@@ -48,22 +47,25 @@ func Rename() *FileName {
 	return name
 }
 
-func (fn *FileName) Parse(n string) error {
-	fn.name = unidecode.Unidecode(filepath.Base(n))
-	fn.Ext = filepath.Ext(n)
-	fn.NewName = fn.name
-
-	if fn.Cwd {
-		cwd, err := os.Getwd()
-		if err != nil {
-			return err
-		}
-		fn.NewName = cwd
+func New(n string) *FileName {
+	name := Rename()
+	err := name.Parse(n)
+	if err != nil {
+		panic(err)
 	}
+	return name
+}
 
+func (fn *FileName) SetName(n string) *FileName {
+	fn.NewName = n
+	return fn
+}
+
+func (fn *FileName) Parse(n string) error {
+	fn.dir, fn.name = filepath.Split(n)
+	fn.Ext = filepath.Ext(n)
 	fn.Base = strings.TrimSuffix(fn.name, fn.Ext)
-	fn.Split = casing.Split(fn.name)
-
+	fn.Split = casing.Split(fn.Base)
 	return nil
 }
 

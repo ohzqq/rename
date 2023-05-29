@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"github.com/danielgtaylor/casing"
+	"github.com/gosimple/unidecode"
+	"github.com/ohzqq/rename"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +15,15 @@ var sanitizeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		files := ValidateArgs(args)
 		for _, file := range files {
-			println(file)
+			name := rename.New(file)
+			n := unidecode.Unidecode(name.Base)
+			split := casing.Split(n)
+			name.SetName(casing.Join(split, ""))
+			nN, err := name.Format()
+			if err != nil {
+				panic(err)
+			}
+			println(nN)
 		}
 	},
 }
