@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -27,4 +28,19 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
+}
+
+func ValidateArgs(args []string) []string {
+	switch len(args) {
+	case 0:
+		panic("requires either a glob or list of files")
+	case 1:
+		files, err := filepath.Glob(args[0])
+		if err != nil {
+			panic(err)
+		}
+		return files
+	default:
+		return args
+	}
 }
