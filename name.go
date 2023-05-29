@@ -1,8 +1,6 @@
 package rename
 
 import (
-	"bytes"
-	"fmt"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -10,33 +8,30 @@ import (
 	"github.com/danielgtaylor/casing"
 )
 
-type FileName struct {
+type Name struct {
 	Ext          string
 	name         string
 	dir          string
 	Base         string
-	Sep          string
+	sep          string
 	Regex        string
-	NewName      string
 	Search       string
 	Replace      string
 	Split        []string
-	Case         Casing
-	Sanitize     bool
+	JoinFunc     func(string, ...casing.TransformFunc) string
 	Cwd          bool
-	PadPosition  PadPosition
 	MergeNumbers bool
-	Prefix       string
-	Suffix       string
-	Num          int
+	prefix       string
+	suffix       string
+	num          int
 }
 
-func New(n string) *FileName {
-	name := &FileName{
-		Num:         1,
-		PadPosition: -1,
-		Case:        -1,
+func New(n string) *Name {
+	name := &Name{
+		num: 1,
+		sep: "",
 	}
+	name.JoinFunc = name.Join
 	err := name.Parse(n)
 	if err != nil {
 		panic(err)
@@ -44,46 +39,47 @@ func New(n string) *FileName {
 	return name
 }
 
-func (fn *FileName) SetName(n string) *FileName {
-	fn.NewName = n
+func (fn *Name) SetName(n string) *Name {
+	fn.Base = n
 	return fn
 }
 
-func (fn *FileName) Parse(n string) error {
+func (fn *Name) Sep(sep string) *Name {
+	fn.sep = sep
+	return fn
+}
+
+func (fn *Name) Num(n int) *Name {
+	fn.num = n
+	return fn
+}
+
+func (fn *Name) Join(sep string, trans ...casing.TransformFunc) string {
+	return casing.Join(fn.Split, sep, trans...)
+}
+
+func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
-	fn.Base = strings.TrimSuffix(fn.name, fn.Ext)
+	fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
 	fn.Split = casing.Split(fn.Base)
-	fn.NewName = n
 	return nil
 }
 
-func (name *FileName) Format(opts ...Option) (string, error) {
-	if name.name == name.NewName {
-		return "", fmt.Errorf("old name (%s) is the same as new name (%s)\n", name.name, name.NewName)
-	}
+func (fn *Name) NewName() string {
+	return fn.Base
+}
 
-	for _, opt := range opts {
-		opt(name)
-	}
-	name.NewName = name.Base
+func (name *Name) Rename(trans ...casing.TransformFunc) string {
+	n := casing.Join(name.Split, name.sep, trans...)
 
-	var buf bytes.Buffer
-	err := nameTmpl.Execute(&buf, name)
-	if err != nil {
-		return "", err
-	}
-	return buf.String(), nil
+	return n
 }
 
 var nameTmpl = template.Must(template.New("name").Parse(`
-{{- if eq .PadPosition 0}}{{ printf .Padding .Num }}{{end -}}
 {{- with .Prefix }}{{.}}{{end -}}
-{{- if eq .PadPosition 1}}{{ printf .Padding .Num }}{{end -}}
 {{- with .NewName }}{{.}}{{end -}}
-{{- if eq .PadPosition 2}}{{ printf .Padding .Num }}{{end -}}
 {{- with .Suffix }}{{.}}{{end -}}
-{{- if eq .PadPosition 4}}{{ printf .Padding .Num }}{{end -}}
 {{- with .Ext }}{{.}}{{end -}}
 `))
 

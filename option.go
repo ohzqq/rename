@@ -1,53 +1,44 @@
 package rename
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/danielgtaylor/casing"
 	"github.com/gosimple/unidecode"
 )
 
-type Option func(*FileName)
+type Option func(*Batch)
 
 func Case(c string) Option {
-	return func(fn *FileName) {
+	return func(fn *Batch) {
 		switch c {
 		case "Camel", "camel", "c":
-			fn.Base = casing.Camel(fn.Base)
+			fn.Case = Camel
 		case "Kebab", "kebab", "k":
-			fn.Base = casing.Kebab(fn.Base)
+			fn.Case = Camel
 		case "lowerCamel", "lowercamel", "Lowercamel", "LowerCamel", "lc":
-			fn.Base = casing.LowerCamel(fn.Base)
+			fn.Case = Camel
 		case "snake", "Snake", "s":
-			fn.Base = casing.Snake(fn.Base)
+			fn.Case = Camel
 		}
 	}
 }
 
-func Prefix(pre string) Option {
-	return func(fn *FileName) {
-		fn.Prefix = pre
+func Asciiify(s string) string {
+	var ascii []string
+	for _, w := range casing.Split(unidecode.Unidecode(s)) {
+		ascii = append(ascii, casing.Split(w)...)
 	}
+	return strings.Join(ascii, "")
 }
 
-func Suffix(suf string) Option {
-	return func(fn *FileName) {
-		fn.Suffix = suf
+func Pad(in string, pFmt string, num int, pos PadPosition) string {
+	switch pos {
+	case PosStart, PosBeforeName:
+		return fmt.Sprintf(pFmt+"%s", num, in)
+	case PosEnd, PosAfterName:
+		return fmt.Sprintf("%s"+pFmt, in, num)
 	}
-}
-
-func Join(s string) Option {
-	return func(fn *FileName) {
-		fn.Base = casing.Join(fn.Split, s)
-	}
-}
-
-func Ascii() Option {
-	return func(fn *FileName) {
-		var s []string
-		for _, w := range fn.Split {
-			if dec := unidecode.Unidecode(w); dec != "" {
-				s = append(s, casing.Split(dec)...)
-			}
-		}
-		fn.Split = s
-	}
+	return in
 }

@@ -3,13 +3,13 @@ package cmd
 import (
 	"log"
 	"os"
-	"path/filepath"
 
+	"github.com/ohzqq/rename"
 	"github.com/spf13/cobra"
 )
 
 var (
-	NameSep string
+	batch = rename.Rename()
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -33,21 +33,20 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
-	rootCmd.PersistentFlags().StringVarP(&NameSep, "separator", "s", "", "separator for joining words")
+	rootCmd.PersistentFlags().StringVarP(&batch.Sep, "separator", "s", "", "separator for joining words")
+	rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
+	rootCmd.PersistentFlags().IntVar(&batch.Max, "max", -1, "end num for enumeration")
+	rootCmd.PersistentFlags().BoolVarP(&batch.Pad, "pad", "p", false, "zero pad files")
 }
 
-func ValidateArgs(args []string) []string {
+func ValidateArgs(args []string) *rename.Batch {
 	switch len(args) {
 	case 0:
 		log.Fatal("requires either a glob or list of files")
-		return args
 	case 1:
-		files, err := filepath.Glob(args[0])
-		if err != nil {
-			log.Fatal(err)
-		}
-		return files
+		batch.Glob(args[0])
 	default:
-		return args
+		batch.Files(args)
 	}
+	return batch
 }

@@ -12,14 +12,7 @@ var sanitizeCmd = &cobra.Command{
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
 		files := ValidateArgs(args)
-		for _, file := range files {
-			name := rename.New(file)
-			nN, err := name.Format(rename.Ascii(), rename.Join(NameSep))
-			if err != nil {
-				panic(err)
-			}
-			println(nN)
-		}
+		files.Rename(rename.Asciiify)
 	},
 }
 
