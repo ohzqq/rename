@@ -15,38 +15,28 @@ type FileName struct {
 	name         string
 	dir          string
 	Base         string
-	Padding      string
 	Sep          string
 	Regex        string
 	NewName      string
 	Search       string
 	Replace      string
 	Split        []string
-	PadPosition  PadPosition
 	Case         Casing
-	Pad          bool
 	Sanitize     bool
 	Cwd          bool
+	PadPosition  PadPosition
 	MergeNumbers bool
 	Prefix       string
 	Suffix       string
 	Num          int
-	Min          int
-	Max          int
 }
 
-func Rename() *FileName {
+func New(n string) *FileName {
 	name := &FileName{
-		Padding:     "%03d",
 		Num:         1,
 		PadPosition: -1,
 		Case:        -1,
 	}
-	return name
-}
-
-func New(n string) *FileName {
-	name := Rename()
 	err := name.Parse(n)
 	if err != nil {
 		panic(err)
@@ -96,16 +86,6 @@ var nameTmpl = template.Must(template.New("name").Parse(`
 {{- if eq .PadPosition 4}}{{ printf .Padding .Num }}{{end -}}
 {{- with .Ext }}{{.}}{{end -}}
 `))
-
-type PadPosition int
-
-//go:generate stringer -type PadPosition -trimprefix PadPos
-const (
-	PadPosStart PadPosition = iota
-	PadPosBeforeName
-	PadPosAfterName
-	PadPosEnd
-)
 
 //go:generate stringer -type Casing
 type Casing int
