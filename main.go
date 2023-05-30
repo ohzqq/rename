@@ -1,6 +1,6 @@
 package main
 
-import "github.com/ohzqq/rename/cmd/cmd"
+import "github.com/ohzqq/rename/cmd"
 
 func main() {
 	cmd.Execute()

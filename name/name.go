@@ -69,3 +69,23 @@ func (name *Name) Rename(trans ...casing.TransformFunc) string {
 	n := casing.Join(name.Split, name.sep, trans...)
 	return n
 }
+
+//go:generate stringer -type Casing
+type Casing int
+
+const (
+	Camel Casing = iota
+	Kebab
+	LowerCamel
+	Snake
+)
+
+type PadPosition int
+
+//go:generate stringer -type PadPosition -trimprefix PadPos
+const (
+	PosStart PadPosition = iota
+	PosBeforeName
+	PosAfterName
+	PosEnd
+)

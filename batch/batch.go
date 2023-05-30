@@ -6,14 +6,13 @@ import (
 	"path/filepath"
 
 	"github.com/danielgtaylor/casing"
-	"github.com/ohzqq/rename"
 	"github.com/ohzqq/rename/name"
 )
 
 type Names struct {
 	Files       []*name.Name
-	PadPosition rename.PadPosition
-	Case        rename.Casing
+	PadPosition name.PadPosition
+	Case        name.Casing
 	Sep         string
 	Min         int
 	Max         int
@@ -24,7 +23,7 @@ type Names struct {
 
 func New() *Names {
 	name := &Names{
-		PadPosition: rename.PosAfterName,
+		PadPosition: name.PosAfterName,
 		Case:        -1,
 		Min:         1,
 		Sep:         "",
