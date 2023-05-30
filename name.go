@@ -79,3 +79,13 @@ const (
 	LowerCamel
 	Snake
 )
+
+type PadPosition int
+
+//go:generate stringer -type PadPosition -trimprefix PadPos
+const (
+	PosStart PadPosition = iota
+	PosBeforeName
+	PosAfterName
+	PosEnd
+)

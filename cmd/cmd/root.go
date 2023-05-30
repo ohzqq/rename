@@ -5,12 +5,9 @@ import (
 	"os"
 
 	"github.com/ohzqq/rename"
+	"github.com/ohzqq/rename/batch"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-)
-
-var (
-	batch = rename.Rename()
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -42,14 +39,14 @@ func init() {
 	viper.SetDefault("asciiify", false)
 
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
-	rootCmd.PersistentFlags().StringVarP(&batch.Sep, "separator", "s", "", "separator for joining words")
-	rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
-	rootCmd.PersistentFlags().IntVar(&batch.Max, "max", -1, "end num for enumeration")
-	rootCmd.PersistentFlags().BoolVarP(&batch.Pad, "pad", "p", false, "zero pad files")
-	rootCmd.PersistentFlags().BoolVarP(&batch.Sanitize, "sanitize", "z", false, "asiify and remove characters")
+	//rootCmd.PersistentFlags().StringVarP(&batch.Sep, "separator", "s", "", "separator for joining words")
+	//rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
+	//rootCmd.PersistentFlags().IntVar(&batch.Max, "max", -1, "end num for enumeration")
+	//rootCmd.PersistentFlags().BoolVarP(&batch.Pad, "pad", "p", false, "zero pad files")
+	//rootCmd.PersistentFlags().BoolVarP(&batch.Sanitize, "sanitize", "z", false, "asiify and remove characters")
 }
 
-func ValidateArgs(args []string) *rename.Batch {
+func ValidateArgs(args []string) *batch.Names {
 	switch len(args) {
 	case 0:
 		log.Fatal("requires either a glob or list of files")
@@ -58,5 +55,5 @@ func ValidateArgs(args []string) *rename.Batch {
 	default:
 		batch.Files(args)
 	}
-	return batch
+	return batch.New()
 }

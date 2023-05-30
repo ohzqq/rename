@@ -61,13 +61,3 @@ func (b *Batch) Rename(trans ...casing.TransformFunc) {
 		fmt.Printf("%s%s\n", name, file.Ext)
 	}
 }
-
-type PadPosition int
-
-//go:generate stringer -type PadPosition -trimprefix PadPos
-const (
-	PosStart PadPosition = iota
-	PosBeforeName
-	PosAfterName
-	PosEnd
-)

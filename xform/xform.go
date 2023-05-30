@@ -1,14 +1,11 @@
-package rename
+package xform
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/danielgtaylor/casing"
 	"github.com/gosimple/unidecode"
 )
-
-type Option func(*Batch)
 
 func Case(c string) Option {
 	return func(fn *Batch) {
@@ -34,15 +31,5 @@ func Asciiify(s string) string {
 }
 
 func Sanitize(s string) string {
-	return casing.Join(casing.Split(strings.TrimSpace(s)), "_", Asciiify)
-}
-
-func Pad(in string, pFmt string, num int, pos PadPosition) string {
-	switch pos {
-	case PosStart, PosBeforeName:
-		return fmt.Sprintf(pFmt+"%s", num, in)
-	case PosEnd, PosAfterName:
-		return fmt.Sprintf("%s"+pFmt, in, num)
-	}
-	return in
+	return casing.Join(casing.Split(s), "_", Asciiify)
 }
