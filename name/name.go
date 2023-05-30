@@ -1,6 +1,8 @@
 package name
 
 import (
+	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -23,8 +25,6 @@ type Name struct {
 	suffix       string
 }
 
-type TransformFunc func(*Name) string
-
 func New(n string) *Name {
 	name := &Name{}
 	err := name.Parse(n)
@@ -43,22 +43,41 @@ func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
 	fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
+	var err error
+	if viper.GetBool("cwd") {
+		viper.Set("pad", true)
+		var wd string
+		if fn.dir != "" {
+			wd = fn.dir
+		} else {
+			wd, err = os.Getwd()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+		fn.Base = filepath.Base(wd)
+	}
 	return nil
 }
 
 func (name *Name) Rename(trans ...casing.TransformFunc) string {
+	var n string
+	base := name.Base
+
 	switch c := viper.GetInt("casing"); c {
 	case Camel:
-		return casing.Camel(name.Base, trans...)
+		n = casing.Camel(base, trans...)
 	case Kebab:
-		return casing.Kebab(name.Base, trans...)
+		n = casing.Kebab(base, trans...)
 	case LowerCamel:
-		return casing.LowerCamel(name.Base, trans...)
+		n = casing.LowerCamel(base, trans...)
 	case Snake:
-		return casing.Snake(name.Base, trans...)
+		n = casing.Snake(base, trans...)
 	default:
-		return casing.Join(casing.Split(name.Base), viper.GetString("sep"), trans...)
+		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
 	}
+
+	return filepath.Join(name.dir, n)
 }
 
 const (
@@ -67,8 +86,6 @@ const (
 	LowerCamel
 	Snake
 )
-
-type PadPosition int
 
 const (
 	PosStart = iota

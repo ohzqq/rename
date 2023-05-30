@@ -41,16 +41,25 @@ func init() {
 	viper.SetDefault("sanitize", false)
 
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
+
 	rootCmd.PersistentFlags().StringP("sep", "s", "", "separator for joining words")
 	viper.BindPFlag("sep", rootCmd.PersistentFlags().Lookup("sep"))
+
 	rootCmd.PersistentFlags().Int("min", 1, "staring num for enumeration")
 	viper.BindPFlag("min", rootCmd.PersistentFlags().Lookup("min"))
+
 	rootCmd.PersistentFlags().Int("max", -1, "end num for enumeration")
 	viper.BindPFlag("max", rootCmd.PersistentFlags().Lookup("max"))
+
 	rootCmd.PersistentFlags().BoolP("pad", "p", false, "zero pad files")
 	viper.BindPFlag("pad", rootCmd.PersistentFlags().Lookup("pad"))
+
 	rootCmd.PersistentFlags().BoolP("sanitize", "z", false, "asiify and remove characters")
 	viper.BindPFlag("sanitize", rootCmd.PersistentFlags().Lookup("sanitize"))
+
+	rootCmd.PersistentFlags().Bool("cwd", false, "use cwd as basename")
+	viper.BindPFlag("cwd", rootCmd.PersistentFlags().Lookup("cwd"))
+
 }
 
 func ValidateArgs(args []string) *batch.Names {

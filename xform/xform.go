@@ -10,21 +10,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-//func Case(c string) Option {
-//  return func(fn *Batch) {
-//    switch c {
-//    case "Camel", "camel", "c":
-//      fn.Case = Camel
-//    case "Kebab", "kebab", "k":
-//      fn.Case = Camel
-//    case "lowerCamel", "lowercamel", "Lowercamel", "LowerCamel", "lc":
-//      fn.Case = Camel
-//    case "snake", "Snake", "s":
-//      fn.Case = Camel
-//    }
-//  }
-//}
-
 func Asciiify(s string) string {
 	var ascii []string
 	for _, w := range casing.Split(unidecode.Unidecode(s)) {
