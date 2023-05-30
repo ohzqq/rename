@@ -1,27 +1,22 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // replaceCmd represents the replace command
 var replaceCmd = &cobra.Command{
-	Use:   "replace",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "replace regex str file...",
+	Short: "search and replace text",
+	Args:  cobra.MinimumNArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("replace called")
+		viper.Set("find", args[0])
+		viper.Set("replace", args[1])
+		names := ValidateArgs(args[2:]).Transform()
+		fmt.Println(names)
 	},
 }
 
