@@ -73,6 +73,12 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 		n = casing.LowerCamel(base, trans...)
 	case Snake:
 		n = casing.Snake(base, trans...)
+	case Lower:
+		trans = append(trans, strings.ToLower)
+		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
+	case Upper:
+		trans = append(trans, strings.ToUpper)
+		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
 	default:
 		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
 	}
@@ -85,6 +91,8 @@ const (
 	Kebab
 	LowerCamel
 	Snake
+	Lower
+	Upper
 )
 
 const (
