@@ -1,4 +1,4 @@
-package rename
+package batch
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/danielgtaylor/casing"
 )
 
-type Batch struct {
+type Names struct {
 	Names       []*Name
 	PadPosition PadPosition
 	Case        Casing
@@ -20,8 +20,8 @@ type Batch struct {
 	Sanitize    bool
 }
 
-func Rename() *Batch {
-	name := &Batch{
+func Rename() *Names {
+	name := &Names{
 		PadPosition: PosAfterName,
 		Case:        -1,
 		Min:         1,
@@ -31,7 +31,7 @@ func Rename() *Batch {
 	return name
 }
 
-func (r *Batch) Glob(g string) *Batch {
+func (r *Names) Glob(g string) *Names {
 	files, err := filepath.Glob(g)
 	if err != nil {
 		log.Fatal(err)
@@ -40,14 +40,14 @@ func (r *Batch) Glob(g string) *Batch {
 	return r
 }
 
-func (r *Batch) Files(files []string) *Batch {
+func (r *Names) Files(files []string) *Names {
 	for _, file := range files {
 		r.Names = append(r.Names, New(file))
 	}
 	return r
 }
 
-func (b *Batch) Rename(trans ...casing.TransformFunc) {
+func (b *Names) Rename(trans ...casing.TransformFunc) {
 	num := b.Min
 	for _, file := range b.Names {
 		if b.Sep != "" {
