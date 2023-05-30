@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/ohzqq/rename/xform"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // sanitizeCmd represents the sanitize command
@@ -11,8 +11,9 @@ var sanitizeCmd = &cobra.Command{
 	Short: "sanitize filename",
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
+		viper.Set("sanitize", true)
 		files := ValidateArgs(args)
-		files.Rename(xform.Sanitize)
+		files.Rename()
 	},
 }
 

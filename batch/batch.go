@@ -14,7 +14,7 @@ import (
 type Names struct {
 	Files       []*name.Name
 	PadPosition name.PadPosition
-	Case        name.Casing
+	Case        int
 	Sep         string
 	Min         int
 	Max         int
@@ -58,6 +58,9 @@ func (r *Names) SetFiles(files []string) *Names {
 }
 
 func (b *Names) Rename(trans ...casing.TransformFunc) {
+	if viper.GetBool("sanitize") {
+		trans = append(trans, xform.Asciiify)
+	}
 	num := viper.GetInt("min")
 	for _, file := range b.Files {
 		name := file.Rename(trans...)
@@ -67,23 +70,4 @@ func (b *Names) Rename(trans ...casing.TransformFunc) {
 		}
 		fmt.Printf("%s%s\n", name, file.Ext)
 	}
-}
-
-func Pad(in string, num int) string {
-	pos := viper.GetInt("pad_position")
-	switch pos {
-	case name.PosStart, name.PosBeforeName:
-		return fmt.Sprintf(
-			viper.GetString("pad_fmt")+"%s",
-			num,
-			in,
-		)
-	case name.PosEnd, name.PosAfterName:
-		return fmt.Sprintf(
-			"%s"+viper.GetString("pad_fmt"),
-			in,
-			num,
-		)
-	}
-	return in
 }

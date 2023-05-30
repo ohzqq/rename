@@ -67,15 +67,22 @@ func (fn *Name) NewName() string {
 }
 
 func (name *Name) Rename(trans ...casing.TransformFunc) string {
-	n := casing.Join(name.Split, viper.GetString("sep"), trans...)
-	return n
+	switch c := viper.GetInt("casing"); c {
+	case Camel:
+		return casing.Camel(name.Base, trans...)
+	case Kebab:
+		return casing.Kebab(name.Base, trans...)
+	case LowerCamel:
+		return casing.LowerCamel(name.Base, trans...)
+	case Snake:
+		return casing.Snake(name.Base, trans...)
+	default:
+		return casing.Join(name.Split, viper.GetString("sep"), trans...)
+	}
 }
 
-//go:generate stringer -type Casing
-type Casing int
-
 const (
-	Camel Casing = iota
+	Camel = iota
 	Kebab
 	LowerCamel
 	Snake

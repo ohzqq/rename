@@ -34,6 +34,7 @@ func init() {
 	viper.SetDefault("pad_fmt", "%03d")
 	viper.SetDefault("min", 1)
 	viper.SetDefault("max", -1)
+	viper.SetDefault("casing", name.Snake)
 	viper.SetDefault("pad_position", name.PosEnd)
 	viper.SetDefault("pad", false)
 	viper.SetDefault("asciiify", false)
