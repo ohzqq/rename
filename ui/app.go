@@ -29,7 +29,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 			props := PreviewProps{
 				Names: c.names,
 			}
-			return cmpnt, nil
+			return cmpnt, cmpnt.Init(props)
 		},
 	})
 }

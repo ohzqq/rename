@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/londek/reactea"
+	"github.com/ohzqq/rename/ui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -15,7 +15,13 @@ var sanitizeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Set("sanitize", true)
 		names := ValidateArgs(args).Transform()
-		fmt.Println(names)
+		pre := ui.New(names)
+		program := reactea.NewProgram(pre)
+
+		if err := program.Start(); err != nil {
+			panic(err)
+		}
+		//fmt.Println(names)
 	},
 }
 
