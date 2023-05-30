@@ -13,6 +13,7 @@ import (
 type Name struct {
 	Ext          string
 	name         string
+	Original     string
 	dir          string
 	base         string
 	Regex        string
@@ -26,7 +27,9 @@ type Name struct {
 }
 
 func New(n string) *Name {
-	name := &Name{}
+	name := &Name{
+		Original: n,
+	}
 	err := name.Parse(n)
 	if err != nil {
 		panic(err)

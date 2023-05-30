@@ -47,8 +47,8 @@ func (r *Names) SetFiles(files []string) *Names {
 	return r
 }
 
-func (b *Names) Transform() []string {
-	var names []string
+func (b *Names) Transform() []map[string]string {
+	var names []map[string]string
 	var trans []casing.TransformFunc
 
 	if viper.GetBool("sanitize") || viper.GetBool("asciiify") {
@@ -70,7 +70,7 @@ func (b *Names) Transform() []string {
 			name = xform.Replace(name)
 		}
 
-		names = append(names, name)
+		names = append(names, map[string]string{file.Original: name})
 	}
 	return names
 }
