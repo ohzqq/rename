@@ -7,6 +7,7 @@ import (
 
 	"github.com/danielgtaylor/casing"
 	"github.com/ohzqq/rename/name"
+	"github.com/spf13/viper"
 )
 
 type Names struct {
@@ -26,7 +27,6 @@ func New() *Names {
 		PadPosition: name.PosAfterName,
 		Case:        -1,
 		Min:         1,
-		Sep:         "",
 		PadFmt:      "%03d",
 	}
 	return name
@@ -59,14 +59,31 @@ func (r *Names) SetFiles(files []string) *Names {
 func (b *Names) Rename(trans ...casing.TransformFunc) {
 	num := b.Min
 	for _, file := range b.Files {
-		if b.Sep != "" {
-			file.Sep(b.Sep)
-		}
 		name := file.Rename(trans...)
-		if b.Pad {
-			//name = Pad(name, b.PadFmt, num, b.PadPosition)
+		if viper.GetBool("pad") {
+			name = Pad(name, num)
 			num++
 		}
 		fmt.Printf("%s%s\n", name, file.Ext)
 	}
+}
+
+func Pad(in string, num int) string {
+	pos := viper.GetInt("pad_position")
+	switch name.PadPosition(pos) {
+	case name.PosStart, name.PosBeforeName:
+		println(pos)
+		return fmt.Sprintf(
+			viper.GetString("pad_fmt")+"%s",
+			num,
+			in,
+		)
+	case name.PosEnd, name.PosAfterName:
+		return fmt.Sprintf(
+			"%s"+viper.GetString("pad_fmt"),
+			in,
+			num,
+		)
+	}
+	return in
 }

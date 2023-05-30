@@ -31,5 +31,5 @@ func Asciiify(s string) string {
 }
 
 func Sanitize(s string) string {
-	return casing.Join(casing.Split(s), "_", Asciiify)
+	return casing.Camel(s, Asciiify)
 }
