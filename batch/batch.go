@@ -64,7 +64,13 @@ func (b *Names) Transform() []string {
 			num++
 		}
 
-		names = append(names, name+file.Ext)
+		name = name + file.Ext
+
+		if viper.IsSet("find") {
+			name = xform.Replace(name)
+		}
+
+		names = append(names, name)
 	}
 	return names
 }

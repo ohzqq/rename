@@ -63,6 +63,12 @@ func init() {
 	viper.BindPFlag("prefix", rootCmd.PersistentFlags().Lookup("prefix"))
 	rootCmd.PersistentFlags().StringP("suffix", "s", "", "add a suffix")
 	viper.BindPFlag("suffix", rootCmd.PersistentFlags().Lookup("suffix"))
+
+	rootCmd.PersistentFlags().StringP("find", "f", "", "find regex")
+	viper.BindPFlag("find", rootCmd.PersistentFlags().Lookup("find"))
+	rootCmd.PersistentFlags().StringP("replace", "r", "", "replace regex")
+	viper.BindPFlag("replace", rootCmd.PersistentFlags().Lookup("replace"))
+	rootCmd.MarkFlagsRequiredTogether("find", "replace")
 }
 
 func ValidateArgs(args []string) *batch.Names {

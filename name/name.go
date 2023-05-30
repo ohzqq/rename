@@ -90,6 +90,7 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	if viper.IsSet("suffix") {
 		n = n + viper.GetString("suffix")
 	}
+
 	return filepath.Join(name.dir, n)
 }
 

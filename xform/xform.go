@@ -2,6 +2,8 @@ package xform
 
 import (
 	"fmt"
+	"log"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -32,4 +34,12 @@ func Pad(in string, num int) string {
 		pad = "%s" + pad
 	}
 	return fmt.Sprintf(pad, in, num)
+}
+
+func Replace(n string) string {
+	regex, err := regexp.Compile(viper.GetString("find"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return regex.ReplaceAllString(n, viper.GetString("replace"))
 }
