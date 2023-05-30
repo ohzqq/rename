@@ -45,8 +45,9 @@ func (r *Names) SetFiles(files []string) *Names {
 	return r
 }
 
-func (b *Names) Rename(trans ...casing.TransformFunc) {
+func (b *Names) Rename() {
 	var names []string
+	var trans []casing.TransformFunc
 
 	if viper.GetBool("sanitize") || viper.GetBool("asciiify") {
 		trans = append(trans, xform.Asciiify)
