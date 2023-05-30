@@ -51,9 +51,9 @@ func ValidateArgs(args []string) *batch.Names {
 	case 0:
 		log.Fatal("requires either a glob or list of files")
 	case 1:
-		batch.Glob(args[0])
+		return batch.Glob(args[0])
 	default:
-		batch.Files(args)
+		return batch.Files(args)
 	}
 	return batch.New()
 }
