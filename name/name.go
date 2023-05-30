@@ -1,4 +1,4 @@
-package rename
+package name
 
 import (
 	"path/filepath"
