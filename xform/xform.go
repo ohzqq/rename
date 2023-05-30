@@ -24,12 +24,12 @@ func Sanitize(s string) string {
 }
 
 func Pad(in string, num int) string {
-	var pad string
+	pad := "%0" + strconv.Itoa(viper.GetInt("pad")) + "d"
 	switch pos := viper.GetInt("pad_position"); pos {
 	case name.PosStart, name.PosBeforeName:
-		pad = viper.GetString("pad_fmt") + "%s"
+		pad = pad + "%s"
 	case name.PosEnd, name.PosAfterName:
-		pad = "%s" + viper.GetString("pad_fmt")
+		pad = "%s" + pad
 	}
 	return fmt.Sprintf(pad, in, num)
 }

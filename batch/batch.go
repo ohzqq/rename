@@ -39,6 +39,7 @@ func (r *Names) Glob(g string) *Names {
 
 func (r *Names) SetFiles(files []string) *Names {
 	if viper.GetInt("pad") == 0 {
+		viper.Set("pad", len(strconv.Itoa(len(r.Files))))
 	}
 	for _, file := range files {
 		r.Files = append(r.Files, name.New(file))
@@ -54,19 +55,12 @@ func (b *Names) Transform() []string {
 		trans = append(trans, xform.Asciiify)
 	}
 
-	switch p := viper.GetInt("pad"); p {
-	case 0:
-		viper.Set("pad", len(strconv.Itoa(len(b.Files))))
-		fallthrough
-	default:
-		xform.PadFmt()
-	}
-
 	num := viper.GetInt("min")
 	for _, file := range b.Files {
 		name := file.Transform(trans...)
 
-		if viper.IsSet("pad_fmt") {
+		if p := viper.GetInt("pad"); p >= 0 {
+			xform.PadFmt()
 			name = xform.Pad(name, num)
 			num++
 		}
