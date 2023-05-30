@@ -58,16 +58,22 @@ func (r *Names) SetFiles(files []string) *Names {
 }
 
 func (b *Names) Rename(trans ...casing.TransformFunc) {
-	if viper.GetBool("sanitize") {
+	var names []string
+
+	if viper.GetBool("sanitize") || viper.GetBool("asciiify") {
 		trans = append(trans, xform.Asciiify)
 	}
+
 	num := viper.GetInt("min")
 	for _, file := range b.Files {
 		name := file.Rename(trans...)
+
 		if viper.GetBool("pad") {
 			name = xform.Pad(name, num)
 			num++
 		}
-		fmt.Printf("%s%s\n", name, file.Ext)
+
+		names = append(names, name+file.Ext)
 	}
+	fmt.Printf("%v\n", names)
 }

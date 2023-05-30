@@ -58,7 +58,6 @@ func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
 	fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
-	fn.Split = casing.Split(fn.Base)
 	return nil
 }
 
@@ -77,7 +76,7 @@ func (name *Name) Rename(trans ...casing.TransformFunc) string {
 	case Snake:
 		return casing.Snake(name.Base, trans...)
 	default:
-		return casing.Join(name.Split, viper.GetString("sep"), trans...)
+		return casing.Join(casing.Split(name.Base), viper.GetString("sep"), trans...)
 	}
 }
 

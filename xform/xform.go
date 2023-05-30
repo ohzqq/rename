@@ -34,7 +34,7 @@ func Asciiify(s string) string {
 }
 
 func Sanitize(s string) string {
-	return casing.Camel(s, Asciiify)
+	return casing.Snake(s, Asciiify)
 }
 
 func Pad(in string, num int) string {
