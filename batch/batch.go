@@ -38,11 +38,11 @@ func (r *Names) Glob(g string) *Names {
 }
 
 func (r *Names) SetFiles(files []string) *Names {
-	if viper.GetInt("pad") == 0 {
-		viper.Set("pad", len(strconv.Itoa(len(r.Files))))
-	}
 	for _, file := range files {
 		r.Files = append(r.Files, name.New(file))
+	}
+	if viper.GetInt("pad") == 0 {
+		viper.Set("pad", len(strconv.Itoa(len(r.Files))))
 	}
 	return r
 }

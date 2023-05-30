@@ -1,27 +1,24 @@
 package cmd
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // cwdCmd represents the cwd command
 var cwdCmd = &cobra.Command{
 	Use:   "cwd",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "rename files using the cwd or base dir",
 	Run: func(cmd *cobra.Command, args []string) {
-		cwd, err := os.Getwd()
-		if err != nil {
-			panic(err)
+		viper.Set("cwd", true)
+		if viper.GetInt("pad") == -1 {
+			viper.Set("pad", 0)
 		}
-		println(cwd)
+		names := ValidateArgs(args).Transform()
+		println(viper.GetInt("pad"))
+		fmt.Println(names)
 	},
 }
 

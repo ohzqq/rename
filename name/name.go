@@ -47,7 +47,6 @@ func (fn *Name) Parse(n string) error {
 
 func (fn *Name) Base() string {
 	if viper.GetBool("cwd") {
-		viper.Set("pad", true)
 		if fn.dir != "" {
 			return filepath.Base(fn.dir)
 		} else {
