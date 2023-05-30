@@ -1,10 +1,13 @@
 package xform
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/danielgtaylor/casing"
 	"github.com/gosimple/unidecode"
+	"github.com/ohzqq/rename/name"
+	"github.com/spf13/viper"
 )
 
 //func Case(c string) Option {
@@ -32,4 +35,15 @@ func Asciiify(s string) string {
 
 func Sanitize(s string) string {
 	return casing.Camel(s, Asciiify)
+}
+
+func Pad(in string, num int) string {
+	var pad string
+	switch pos := viper.GetInt("pad_position"); pos {
+	case name.PosStart, name.PosBeforeName:
+		pad = viper.GetString("pad_fmt") + "%s"
+	case name.PosEnd, name.PosAfterName:
+		pad = "%s" + viper.GetString("pad_fmt")
+	}
+	return fmt.Sprintf(pad, in, num)
 }

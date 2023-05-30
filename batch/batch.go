@@ -7,6 +7,7 @@ import (
 
 	"github.com/danielgtaylor/casing"
 	"github.com/ohzqq/rename/name"
+	"github.com/ohzqq/rename/xform"
 	"github.com/spf13/viper"
 )
 
@@ -61,7 +62,7 @@ func (b *Names) Rename(trans ...casing.TransformFunc) {
 	for _, file := range b.Files {
 		name := file.Rename(trans...)
 		if viper.GetBool("pad") {
-			name = Pad(name, num)
+			name = xform.Pad(name, num)
 			num++
 		}
 		fmt.Printf("%s%s\n", name, file.Ext)
