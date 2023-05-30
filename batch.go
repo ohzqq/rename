@@ -50,7 +50,9 @@ func (r *Batch) Files(files []string) *Batch {
 func (b *Batch) Rename(trans ...casing.TransformFunc) {
 	num := b.Min
 	for _, file := range b.Names {
-		file.Sep(b.Sep)
+		if b.Sep != "" {
+			file.Sep(b.Sep)
+		}
 		name := file.Rename(trans...)
 		if b.Pad {
 			name = Pad(name, b.PadFmt, num, b.PadPosition)

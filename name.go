@@ -17,7 +17,6 @@ type Name struct {
 	Search       string
 	Replace      string
 	Split        []string
-	JoinFunc     func(string, ...casing.TransformFunc) string
 	Cwd          bool
 	MergeNumbers bool
 	prefix       string
@@ -25,12 +24,13 @@ type Name struct {
 	num          int
 }
 
+type TransformFunc func(*Name) string
+
 func New(n string) *Name {
 	name := &Name{
 		num: 1,
 		sep: "",
 	}
-	name.JoinFunc = name.Join
 	err := name.Parse(n)
 	if err != nil {
 		panic(err)
@@ -53,10 +53,6 @@ func (fn *Name) Num(n int) *Name {
 	return fn
 }
 
-func (fn *Name) Join(sep string, trans ...casing.TransformFunc) string {
-	return casing.Join(fn.Split, sep, trans...)
-}
-
 func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
@@ -71,7 +67,6 @@ func (fn *Name) NewName() string {
 
 func (name *Name) Rename(trans ...casing.TransformFunc) string {
 	n := casing.Join(name.Split, name.sep, trans...)
-
 	return n
 }
 

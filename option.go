@@ -34,7 +34,7 @@ func Asciiify(s string) string {
 }
 
 func Sanitize(s string) string {
-	return casing.Join(casing.Split(strings.TrimSpace(s)), "", Asciiify)
+	return casing.Join(casing.Split(strings.TrimSpace(s)), "_", Asciiify)
 }
 
 func Pad(in string, pFmt string, num int, pos PadPosition) string {

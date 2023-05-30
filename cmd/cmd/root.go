@@ -6,6 +6,7 @@ import (
 
 	"github.com/ohzqq/rename"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -32,6 +33,7 @@ func Execute() {
 }
 
 func init() {
+	viper.SetDefault("sep", "_")
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
 	rootCmd.PersistentFlags().StringVarP(&batch.Sep, "separator", "s", "", "separator for joining words")
 	rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
