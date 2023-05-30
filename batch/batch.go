@@ -13,24 +13,11 @@ import (
 )
 
 type Names struct {
-	Files       []*name.Name
-	PadPosition name.PadPosition
-	Case        int
-	Sep         string
-	Min         int
-	Max         int
-	Pad         bool
-	PadFmt      string
-	Sanitize    bool
+	Files []*name.Name
 }
 
 func New() *Names {
-	name := &Names{
-		PadPosition: name.PosAfterName,
-		Case:        -1,
-		Min:         1,
-		PadFmt:      "%03d",
-	}
+	name := &Names{}
 	return name
 }
 

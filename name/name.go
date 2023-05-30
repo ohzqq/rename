@@ -13,7 +13,6 @@ type Name struct {
 	name         string
 	dir          string
 	Base         string
-	sep          string
 	Regex        string
 	Search       string
 	Replace      string
@@ -22,16 +21,12 @@ type Name struct {
 	MergeNumbers bool
 	prefix       string
 	suffix       string
-	num          int
 }
 
 type TransformFunc func(*Name) string
 
 func New(n string) *Name {
-	name := &Name{
-		num: 1,
-		sep: "",
-	}
+	name := &Name{}
 	err := name.Parse(n)
 	if err != nil {
 		panic(err)
@@ -44,25 +39,11 @@ func (fn *Name) SetName(n string) *Name {
 	return fn
 }
 
-func (fn *Name) Sep(sep string) *Name {
-	fn.sep = sep
-	return fn
-}
-
-func (fn *Name) Num(n int) *Name {
-	fn.num = n
-	return fn
-}
-
 func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
 	fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
 	return nil
-}
-
-func (fn *Name) NewName() string {
-	return fn.Base
 }
 
 func (name *Name) Rename(trans ...casing.TransformFunc) string {
