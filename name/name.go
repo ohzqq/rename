@@ -42,7 +42,7 @@ func (fn *Name) SetName(n string) *Name {
 func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
-	fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
+
 	var err error
 	if viper.GetBool("cwd") {
 		viper.Set("pad", true)
@@ -56,11 +56,13 @@ func (fn *Name) Parse(n string) error {
 			}
 		}
 		fn.Base = filepath.Base(wd)
+	} else {
+		fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
 	}
 	return nil
 }
 
-func (name *Name) Rename(trans ...casing.TransformFunc) string {
+func (name *Name) Build(trans ...casing.TransformFunc) string {
 	var n string
 	base := name.Base
 

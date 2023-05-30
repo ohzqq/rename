@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -8,12 +10,12 @@ import (
 // sanitizeCmd represents the sanitize command
 var sanitizeCmd = &cobra.Command{
 	Use:   "sanitize",
-	Short: "sanitize filename",
+	Short: "sanitize filenames",
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Set("sanitize", true)
-		files := ValidateArgs(args)
-		files.Rename()
+		names := ValidateArgs(args).Rename()
+		fmt.Println(names)
 	},
 }
 

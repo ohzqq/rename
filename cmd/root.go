@@ -31,12 +31,11 @@ func Execute() {
 
 func init() {
 	viper.SetDefault("sep", "_")
-	viper.SetDefault("pad_fmt", "%03d")
 	viper.SetDefault("min", 1)
 	viper.SetDefault("max", -1)
 	viper.SetDefault("casing", name.Snake)
 	viper.SetDefault("pad_position", name.PosEnd)
-	viper.SetDefault("pad", false)
+	viper.SetDefault("pad", -1)
 	viper.SetDefault("asciiify", false)
 	viper.SetDefault("sanitize", false)
 
@@ -51,7 +50,7 @@ func init() {
 	rootCmd.PersistentFlags().Int("max", -1, "end num for enumeration")
 	viper.BindPFlag("max", rootCmd.PersistentFlags().Lookup("max"))
 
-	rootCmd.PersistentFlags().BoolP("pad", "p", false, "zero pad files")
+	rootCmd.PersistentFlags().IntP("pad", "p", -1, "zero pad files")
 	viper.BindPFlag("pad", rootCmd.PersistentFlags().Lookup("pad"))
 
 	rootCmd.PersistentFlags().BoolP("sanitize", "z", false, "asiify and remove characters")

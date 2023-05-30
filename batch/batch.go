@@ -1,10 +1,9 @@
 package batch
 
 import (
-	"fmt"
 	"log"
 	"path/filepath"
-	"strings"
+	"strconv"
 
 	"github.com/danielgtaylor/casing"
 	"github.com/ohzqq/rename/name"
@@ -39,13 +38,15 @@ func (r *Names) Glob(g string) *Names {
 }
 
 func (r *Names) SetFiles(files []string) *Names {
+	if viper.GetInt("pad") == 0 {
+	}
 	for _, file := range files {
 		r.Files = append(r.Files, name.New(file))
 	}
 	return r
 }
 
-func (b *Names) Rename() {
+func (b *Names) Generate() []string {
 	var names []string
 	var trans []casing.TransformFunc
 
@@ -53,16 +54,24 @@ func (b *Names) Rename() {
 		trans = append(trans, xform.Asciiify)
 	}
 
+	switch p := viper.GetInt("pad"); p {
+	case 0:
+		d := strconv.Itoa(len(strconv.Itoa(len(b.Files))))
+		viper.Set("pad_fmt", "%0"+d+"d")
+	default:
+		viper.Set("pad_fmt", "%0"+strconv.Itoa(p)+"d")
+	}
+
 	num := viper.GetInt("min")
 	for _, file := range b.Files {
-		name := file.Rename(trans...)
+		name := file.Build(trans...)
 
-		if viper.GetBool("pad") {
+		if viper.IsSet("pad_fmt") {
 			name = xform.Pad(name, num)
 			num++
 		}
 
 		names = append(names, name+file.Ext)
 	}
-	fmt.Printf("%v\n", strings.Join(names, "\n"))
+	return names
 }
