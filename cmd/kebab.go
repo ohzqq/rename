@@ -1,40 +1,24 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
 
+	"github.com/ohzqq/rename/name"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // kebabCmd represents the kebab command
 var kebabCmd = &cobra.Command{
 	Use:   "kebab",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "all files to kebab",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("kebab called")
+		viper.Set("casing", name.Kebab)
+		names := ValidateArgs(args).Transform()
+		fmt.Println(names)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(kebabCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// kebabCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// kebabCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

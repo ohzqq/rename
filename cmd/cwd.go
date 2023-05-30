@@ -17,7 +17,6 @@ var cwdCmd = &cobra.Command{
 			viper.Set("pad", 0)
 		}
 		names := ValidateArgs(args).Transform()
-		println(viper.GetInt("pad"))
 		fmt.Println(names)
 	},
 }
