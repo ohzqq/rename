@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/danielgtaylor/casing"
+	"github.com/spf13/viper"
 )
 
 type Name struct {
@@ -66,7 +67,7 @@ func (fn *Name) NewName() string {
 }
 
 func (name *Name) Rename(trans ...casing.TransformFunc) string {
-	n := casing.Join(name.Split, name.sep, trans...)
+	n := casing.Join(name.Split, viper.GetString("sep"), trans...)
 	return n
 }
 

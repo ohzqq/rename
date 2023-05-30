@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/ohzqq/rename"
+	"github.com/ohzqq/rename/xform"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +12,7 @@ var sanitizeCmd = &cobra.Command{
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
 		files := ValidateArgs(args)
-		files.Rename(rename.Sanitize)
+		files.Rename(xform.Sanitize)
 	},
 }
 

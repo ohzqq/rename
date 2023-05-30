@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/ohzqq/rename"
 	"github.com/ohzqq/rename/batch"
+	"github.com/ohzqq/rename/name"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -34,16 +34,22 @@ func init() {
 	viper.SetDefault("pad_fmt", "%03d")
 	viper.SetDefault("min", 1)
 	viper.SetDefault("max", -1)
-	viper.SetDefault("pad_position", rename.PosEnd)
+	viper.SetDefault("pad_position", name.PosEnd)
 	viper.SetDefault("pad", false)
 	viper.SetDefault("asciiify", false)
+	viper.SetDefault("sanitize", false)
 
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
-	//rootCmd.PersistentFlags().StringVarP(&batch.Sep, "separator", "s", "", "separator for joining words")
-	//rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
-	//rootCmd.PersistentFlags().IntVar(&batch.Max, "max", -1, "end num for enumeration")
-	//rootCmd.PersistentFlags().BoolVarP(&batch.Pad, "pad", "p", false, "zero pad files")
-	//rootCmd.PersistentFlags().BoolVarP(&batch.Sanitize, "sanitize", "z", false, "asiify and remove characters")
+	rootCmd.PersistentFlags().StringP("sep", "s", "", "separator for joining words")
+	viper.BindPFlag("sep", rootCmd.PersistentFlags().Lookup("sep"))
+	rootCmd.PersistentFlags().Int("min", 1, "staring num for enumeration")
+	viper.BindPFlag("min", rootCmd.PersistentFlags().Lookup("min"))
+	rootCmd.PersistentFlags().Int("max", -1, "end num for enumeration")
+	viper.BindPFlag("max", rootCmd.PersistentFlags().Lookup("max"))
+	rootCmd.PersistentFlags().BoolP("pad", "p", false, "zero pad files")
+	viper.BindPFlag("pad", rootCmd.PersistentFlags().Lookup("pad"))
+	rootCmd.PersistentFlags().BoolP("sanitize", "z", false, "asiify and remove characters")
+	viper.BindPFlag("sanitize", rootCmd.PersistentFlags().Lookup("sanitize"))
 }
 
 func ValidateArgs(args []string) *batch.Names {
