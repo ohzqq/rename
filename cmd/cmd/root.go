@@ -34,6 +34,13 @@ func Execute() {
 
 func init() {
 	viper.SetDefault("sep", "_")
+	viper.SetDefault("pad_fmt", "%03d")
+	viper.SetDefault("min", 1)
+	viper.SetDefault("max", -1)
+	viper.SetDefault("pad_position", rename.PosEnd)
+	viper.SetDefault("pad", false)
+	viper.SetDefault("asciiify", false)
+
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
 	rootCmd.PersistentFlags().StringVarP(&batch.Sep, "separator", "s", "", "separator for joining words")
 	rootCmd.PersistentFlags().IntVar(&batch.Min, "min", 1, "staring num for enumeration")
