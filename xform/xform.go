@@ -2,6 +2,7 @@ package xform
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/danielgtaylor/casing"
@@ -31,4 +32,8 @@ func Pad(in string, num int) string {
 		pad = "%s" + viper.GetString("pad_fmt")
 	}
 	return fmt.Sprintf(pad, in, num)
+}
+
+func PadFmt() {
+	viper.Set("pad_fmt", "%0"+strconv.Itoa(viper.GetInt("pad"))+"d")
 }

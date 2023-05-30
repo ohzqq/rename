@@ -46,7 +46,7 @@ func (r *Names) SetFiles(files []string) *Names {
 	return r
 }
 
-func (b *Names) Generate() []string {
+func (b *Names) Transform() []string {
 	var names []string
 	var trans []casing.TransformFunc
 
@@ -56,15 +56,15 @@ func (b *Names) Generate() []string {
 
 	switch p := viper.GetInt("pad"); p {
 	case 0:
-		d := strconv.Itoa(len(strconv.Itoa(len(b.Files))))
-		viper.Set("pad_fmt", "%0"+d+"d")
+		viper.Set("pad", len(strconv.Itoa(len(b.Files))))
+		fallthrough
 	default:
-		viper.Set("pad_fmt", "%0"+strconv.Itoa(p)+"d")
+		xform.PadFmt()
 	}
 
 	num := viper.GetInt("min")
 	for _, file := range b.Files {
-		name := file.Build(trans...)
+		name := file.Transform(trans...)
 
 		if viper.IsSet("pad_fmt") {
 			name = xform.Pad(name, num)

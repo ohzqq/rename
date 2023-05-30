@@ -14,7 +14,7 @@ type Name struct {
 	Ext          string
 	name         string
 	dir          string
-	Base         string
+	base         string
 	Regex        string
 	Search       string
 	Replace      string
@@ -35,36 +35,35 @@ func New(n string) *Name {
 }
 
 func (fn *Name) SetName(n string) *Name {
-	fn.Base = n
+	fn.base = n
 	return fn
 }
 
 func (fn *Name) Parse(n string) error {
 	fn.dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
-
-	var err error
-	if viper.GetBool("cwd") {
-		viper.Set("pad", true)
-		var wd string
-		if fn.dir != "" {
-			wd = fn.dir
-		} else {
-			wd, err = os.Getwd()
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-		fn.Base = filepath.Base(wd)
-	} else {
-		fn.Base = strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
-	}
 	return nil
 }
 
-func (name *Name) Build(trans ...casing.TransformFunc) string {
+func (fn *Name) Base() string {
+	if viper.GetBool("cwd") {
+		viper.Set("pad", true)
+		if fn.dir != "" {
+			return filepath.Base(fn.dir)
+		} else {
+			wd, err := os.Getwd()
+			if err != nil {
+				log.Fatal(err)
+			}
+			return filepath.Base(wd)
+		}
+	}
+	return strings.TrimSpace(strings.TrimSuffix(fn.name, fn.Ext))
+}
+
+func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	var n string
-	base := name.Base
+	base := name.Base()
 
 	switch c := viper.GetInt("casing"); c {
 	case Camel:

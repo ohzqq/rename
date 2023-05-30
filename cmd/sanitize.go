@@ -14,7 +14,7 @@ var sanitizeCmd = &cobra.Command{
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Set("sanitize", true)
-		names := ValidateArgs(args).Rename()
+		names := ValidateArgs(args).Transform()
 		fmt.Println(names)
 	},
 }
