@@ -57,7 +57,7 @@ func (r *Names) SetFiles(files []string) *Names {
 }
 
 func (b *Names) Rename(trans ...casing.TransformFunc) {
-	num := b.Min
+	num := viper.GetInt("min")
 	for _, file := range b.Files {
 		name := file.Rename(trans...)
 		if viper.GetBool("pad") {
