@@ -70,9 +70,8 @@ func (b *Names) Rename(trans ...casing.TransformFunc) {
 
 func Pad(in string, num int) string {
 	pos := viper.GetInt("pad_position")
-	switch name.PadPosition(pos) {
+	switch pos {
 	case name.PosStart, name.PosBeforeName:
-		println(pos)
 		return fmt.Sprintf(
 			viper.GetString("pad_fmt")+"%s",
 			num,
