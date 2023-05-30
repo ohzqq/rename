@@ -41,7 +41,7 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
 
-	rootCmd.PersistentFlags().StringP("sep", "s", "", "separator for joining words")
+	rootCmd.PersistentFlags().String("sep", "", "separator for joining words")
 	viper.BindPFlag("sep", rootCmd.PersistentFlags().Lookup("sep"))
 
 	rootCmd.PersistentFlags().Int("min", 1, "staring num for enumeration")
@@ -50,7 +50,7 @@ func init() {
 	rootCmd.PersistentFlags().Int("max", -1, "end num for enumeration")
 	viper.BindPFlag("max", rootCmd.PersistentFlags().Lookup("max"))
 
-	rootCmd.PersistentFlags().IntP("pad", "p", -1, "zero pad files")
+	rootCmd.PersistentFlags().IntP("pad", "d", -1, "zero pad files")
 	viper.BindPFlag("pad", rootCmd.PersistentFlags().Lookup("pad"))
 
 	rootCmd.PersistentFlags().BoolP("sanitize", "z", false, "asiify and remove characters")
@@ -59,6 +59,10 @@ func init() {
 	rootCmd.PersistentFlags().Bool("cwd", false, "use cwd as basename")
 	viper.BindPFlag("cwd", rootCmd.PersistentFlags().Lookup("cwd"))
 
+	rootCmd.PersistentFlags().StringP("prefix", "p", "", "add a prefix")
+	viper.BindPFlag("prefix", rootCmd.PersistentFlags().Lookup("prefix"))
+	rootCmd.PersistentFlags().StringP("suffix", "s", "", "add a suffix")
+	viper.BindPFlag("suffix", rootCmd.PersistentFlags().Lookup("suffix"))
 }
 
 func ValidateArgs(args []string) *batch.Names {

@@ -83,6 +83,13 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
 	}
 
+	if viper.IsSet("prefix") {
+		n = viper.GetString("prefix") + n
+	}
+
+	if viper.IsSet("suffix") {
+		n = n + viper.GetString("suffix")
+	}
 	return filepath.Join(name.dir, n)
 }
 
