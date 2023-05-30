@@ -60,7 +60,6 @@ func (b *Names) Transform() []string {
 		name := file.Transform(trans...)
 
 		if p := viper.GetInt("pad"); p >= 0 {
-			xform.PadFmt()
 			name = xform.Pad(name, num)
 			num++
 		}

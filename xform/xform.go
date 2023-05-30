@@ -33,7 +33,3 @@ func Pad(in string, num int) string {
 	}
 	return fmt.Sprintf(pad, in, num)
 }
-
-func PadFmt() {
-	viper.Set("pad_fmt", "%0"+strconv.Itoa(viper.GetInt("pad"))+"d")
-}
