@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"strings"
 
 	"github.com/danielgtaylor/casing"
 	"github.com/ohzqq/rename/name"
@@ -75,5 +76,5 @@ func (b *Names) Rename(trans ...casing.TransformFunc) {
 
 		names = append(names, name+file.Ext)
 	}
-	fmt.Printf("%v\n", names)
+	fmt.Printf("%v\n", strings.Join(names, "\n"))
 }
