@@ -15,7 +15,7 @@ type Name struct {
 	Ext          string
 	name         string
 	Original     string
-	dir          string
+	Dir          string
 	base         string
 	Regex        string
 	Search       string
@@ -44,15 +44,15 @@ func (fn *Name) SetName(n string) *Name {
 }
 
 func (fn *Name) Parse(n string) error {
-	fn.dir, fn.name = filepath.Split(n)
+	fn.Dir, fn.name = filepath.Split(n)
 	fn.Ext = filepath.Ext(n)
 	return nil
 }
 
 func (fn *Name) Base() string {
 	if viper.GetBool("cwd") {
-		if fn.dir != "" {
-			return filepath.Base(fn.dir)
+		if fn.Dir != "" {
+			return filepath.Base(fn.Dir)
 		} else {
 			wd, err := os.Getwd()
 			if err != nil {
@@ -86,16 +86,7 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	default:
 		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	}
-
-	if viper.IsSet("prefix") {
-		n = viper.GetString("prefix") + n
-	}
-
-	if viper.IsSet("suffix") {
-		n = n + viper.GetString("suffix")
-	}
-
-	return filepath.Join(name.dir, n)
+	return n
 }
 
 const (

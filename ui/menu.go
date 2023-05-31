@@ -37,7 +37,7 @@ var menuPrompt = []string{
 	"[F1] Case",
 	"[F2] Padding",
 	"[F3] Replace",
-	//"[F4] Prefix",
-	//"[F5] Suffix",
+	"[F4] Prefix",
+	"[F5] Suffix",
 	"[esc] Menu",
 }

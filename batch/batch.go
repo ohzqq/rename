@@ -1,6 +1,7 @@
 package batch
 
 import (
+	"fmt"
 	"log"
 	"path/filepath"
 	"strconv"
@@ -58,20 +59,42 @@ func (b *Names) Transform() []map[string]string {
 
 	num := cfg.Padding().Start
 	for _, file := range b.Files {
-		name := file.Transform(trans...)
+		n := file.Transform(trans...)
 
+		if viper.IsSet("find") {
+			n = xform.Replace(n)
+		}
+
+		var padding string
 		if p := cfg.Padding().Zeroes; p >= 0 {
-			name = xform.Pad(name, num)
+			padding = xform.Pad(num)
 			num++
 		}
 
-		name = name + file.Ext
-
-		if viper.IsSet("find") {
-			name = xform.Replace(name)
+		var pre string
+		if viper.IsSet("prefix") {
+			pre = viper.GetString("prefix")
 		}
 
-		names = append(names, map[string]string{file.Original: name})
+		var suf string
+		if viper.IsSet("suffix") {
+			suf = viper.GetString("suffix")
+		}
+
+		switch pos := cfg.Padding().Position; name.PadPosition(pos) {
+		case name.PosStart:
+			n = fmt.Sprint(padding, pre, n, suf)
+		case name.PosBeforeName:
+			n = fmt.Sprint(pre, padding, n, suf)
+		case name.PosEnd:
+			n = fmt.Sprint(pre, n, suf, padding)
+		case name.PosAfterName:
+			n = fmt.Sprint(pre, n, padding, suf)
+		}
+
+		n = filepath.Join(file.Dir, n+file.Ext)
+
+		names = append(names, map[string]string{file.Original: n})
 	}
 	return names
 }

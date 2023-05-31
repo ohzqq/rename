@@ -76,3 +76,11 @@ func Case() int {
 func SetCase(c any) {
 	viper.Set("casing", c)
 }
+
+func SetSuffix(c any) {
+	viper.Set("suffix", c)
+}
+
+func SetPrefix(c any) {
+	viper.Set("prefix", c)
+}
