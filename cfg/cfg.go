@@ -1,6 +1,11 @@
 package cfg
 
-import "github.com/spf13/viper"
+import (
+	"log"
+	"regexp"
+
+	"github.com/spf13/viper"
+)
 
 type PaddingCfg struct {
 	Zeroes   int
@@ -42,4 +47,24 @@ func SetPosition(num any) {
 
 func Sep() string {
 	return viper.GetString("sep")
+}
+
+func Find() *regexp.Regexp {
+	regex, err := regexp.Compile(viper.GetString("find"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return regex
+}
+
+func SetFind(f any) {
+	viper.Set("find", f)
+}
+
+func Replace() string {
+	return viper.GetString("replace")
+}
+
+func SetReplace(f any) {
+	viper.Set("replace", f)
 }

@@ -2,8 +2,6 @@ package xform
 
 import (
 	"fmt"
-	"log"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -11,7 +9,6 @@ import (
 	"github.com/gosimple/unidecode"
 	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/name"
-	"github.com/spf13/viper"
 )
 
 func Asciiify(s string) string {
@@ -38,9 +35,6 @@ func Pad(in string, num int) string {
 }
 
 func Replace(n string) string {
-	regex, err := regexp.Compile(viper.GetString("find"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	return regex.ReplaceAllString(n, viper.GetString("replace"))
+	regex := cfg.Find()
+	return regex.ReplaceAllString(n, cfg.Replace())
 }

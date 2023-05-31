@@ -19,7 +19,7 @@ var sanitizeCmd = &cobra.Command{
 		viper.Set("sanitize", true)
 		fmt.Printf("%v\n", cfg.Padding())
 		names := ValidateArgs(args)
-		pre := ui.New(names).Route("padding")
+		pre := ui.New(names).Route("replace")
 		program := reactea.NewProgram(pre)
 
 		if err := program.Start(); err != nil {
