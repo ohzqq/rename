@@ -3,6 +3,7 @@ package ui
 import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/londek/reactea"
 )
 
 type Input struct {
@@ -29,6 +30,14 @@ func (c *Input) Save() {
 
 func (c *Input) Update(msg tea.Msg) (*Input, tea.Cmd) {
 	var cmd tea.Cmd
+
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch key := msg.String(); key {
+		case "ctrl+c":
+			return c, reactea.Destroy
+		}
+	}
 
 	c.Model, cmd = c.Model.Update(msg)
 

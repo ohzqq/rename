@@ -63,9 +63,9 @@ func (c *Form) Update(msg tea.Msg) tea.Cmd {
 		switch msg.Type {
 		case tea.KeyEnter:
 			if c.focused == len(c.inputs)-1 {
-				cfg.Padding().SetZeroes(c.inputs[zeroes].Value())
-				cfg.Padding().SetStart(c.inputs[start].Value())
-				cfg.Padding().SetPosition(c.inputs[position].Value())
+				for i := range c.inputs {
+					c.inputs[i].Save()
+				}
 				reactea.SetCurrentRoute("preview")
 				return nil
 			}
