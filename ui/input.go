@@ -11,12 +11,6 @@ type Input struct {
 	Set func(any)
 }
 
-const (
-	zeroes = iota
-	start
-	position
-)
-
 func NewInput(set func(any)) *Input {
 	return &Input{
 		Model: textinput.New(),
