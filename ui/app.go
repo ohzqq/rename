@@ -2,6 +2,7 @@ package ui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/londek/reactea"
 	"github.com/londek/reactea/router"
 	"github.com/ohzqq/rename/batch"
@@ -41,7 +42,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 		"replace": FormRoute(FindReplaceForm()),
 		"case":    FormRoute(CaseForm()),
 	}
-	routes["default"] = routes[c.route]
+	routes["default"] = initMenu(vertical)
 	return c.router.Init(routes)
 }
 
@@ -49,7 +50,22 @@ func (c *App) Update(msg tea.Msg) tea.Cmd {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		// ctrl+c support
-		if msg.String() == "ctrl+c" {
+		switch msg.String() {
+		case "esc":
+			reactea.SetCurrentRoute("default")
+		case "f1":
+			reactea.SetCurrentRoute("case")
+		case "f2":
+			reactea.SetCurrentRoute("padding")
+		case "f3":
+			reactea.SetCurrentRoute("replace")
+			//case "f4":
+			//  reactea.SetCurrentRoute("Prefix")
+			//case "f5":
+			//  reactea.SetCurrentRoute("Suffix")
+		//case "enter":
+		//reactea.SetCurrentRoute("preview")
+		case "ctrl+c":
 			return reactea.Destroy
 		}
 	}
@@ -57,10 +73,25 @@ func (c *App) Update(msg tea.Msg) tea.Cmd {
 	return c.router.Update(msg)
 }
 
-func (c *App) Render(width, height int) string {
-	return c.router.Render(width, height)
+func (c *App) Render(w, h int) string {
+	var views []string
+	if r := reactea.CurrentRoute(); r != "" && r != "default" {
+		views = append(views, MenuRenderer(horizontal, w, h))
+	}
+	views = append(views, c.router.Render(w, h-1))
+	return lipgloss.JoinVertical(lipgloss.Left, views...)
 }
 
 func (c *App) SetNames(names *batch.Names) {
 	c.names = names
+}
+
+type UpdateRouteMsg struct {
+	Route string
+}
+
+func UpdateRoute(r string) tea.Cmd {
+	return func() tea.Msg {
+		return UpdateRouteMsg{Route: r}
+	}
 }

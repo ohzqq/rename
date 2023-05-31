@@ -19,7 +19,9 @@ func NewInput(set func(any)) *Input {
 }
 
 func (c *Input) Save() {
-	c.Set(c.Model.Value())
+	if val := c.Model.Value(); val != "" {
+		c.Set(val)
+	}
 }
 
 func (c *Input) Update(msg tea.Msg) (*Input, tea.Cmd) {

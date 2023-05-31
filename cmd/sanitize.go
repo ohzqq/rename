@@ -15,7 +15,8 @@ var sanitizeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Set("sanitize", true)
 		names := ValidateArgs(args)
-		pre := ui.New(names).Route("case")
+		pre := ui.New(names)
+		//pre.Route("case")
 		program := reactea.NewProgram(pre)
 
 		if err := program.Start(); err != nil {
