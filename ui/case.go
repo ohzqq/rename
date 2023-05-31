@@ -7,6 +7,7 @@ func CaseForm() *Form {
 	inputs[0] = NewInput(cfg.SetCase)
 	inputs[0].Placeholder = "3"
 	inputs[0].Prompt = casePrompt
+	inputs[0].Validate = ValidateInt
 	return &Form{
 		inputs:  inputs,
 		focused: 0,
