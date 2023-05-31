@@ -13,6 +13,11 @@ type App struct {
 	router reactea.Component[router.Props]
 
 	names []map[string]string
+	input string
+}
+
+type FormProps struct {
+	SetNames func([]map[string]string)
 }
 
 func New(names []map[string]string) *App {
@@ -31,6 +36,10 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 			}
 			return cmpnt, cmpnt.Init(props)
 		},
+		"padding": func(router.Params) (reactea.SomeComponent, tea.Cmd) {
+			cmpnt := NewPaddingForm()
+			return cmpnt, cmpnt.Init(reactea.NoProps{})
+		},
 	})
 }
 
@@ -48,4 +57,8 @@ func (c *App) Update(msg tea.Msg) tea.Cmd {
 
 func (c *App) Render(width, height int) string {
 	return c.router.Render(width, height)
+}
+
+func (c *App) SetNames(names []map[string]string) {
+	c.names = names
 }
