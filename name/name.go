@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/danielgtaylor/casing"
+	"github.com/ohzqq/rename/cfg"
 	"github.com/spf13/viper"
 )
 
@@ -78,12 +79,12 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 		n = casing.Snake(base, trans...)
 	case Lower:
 		trans = append(trans, strings.ToLower)
-		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
+		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	case Upper:
 		trans = append(trans, strings.ToUpper)
-		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
+		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	default:
-		n = casing.Join(casing.Split(base), viper.GetString("sep"), trans...)
+		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	}
 
 	if viper.IsSet("prefix") {

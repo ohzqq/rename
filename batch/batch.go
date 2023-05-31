@@ -56,11 +56,11 @@ func (b *Names) Transform() []map[string]string {
 		trans = append(trans, xform.Asciiify)
 	}
 
-	num := viper.GetInt("pad.start")
+	num := cfg.Padding().Start
 	for _, file := range b.Files {
 		name := file.Transform(trans...)
 
-		if p := viper.GetInt("pad.zeroes"); p >= 0 {
+		if p := cfg.Padding().Zeroes; p >= 0 {
 			name = xform.Pad(name, num)
 			num++
 		}

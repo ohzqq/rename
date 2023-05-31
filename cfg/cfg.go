@@ -30,3 +30,7 @@ func (p *PaddingCfg) SetPosition(num any) *PaddingCfg {
 	viper.Set("pad.position", num)
 	return p
 }
+
+func Sep() string {
+	return viper.GetString("sep")
+}
