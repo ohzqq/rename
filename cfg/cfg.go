@@ -68,3 +68,11 @@ func Replace() string {
 func SetReplace(f any) {
 	viper.Set("replace", f)
 }
+
+func Case() int {
+	return viper.GetInt("casing")
+}
+
+func SetCase(c any) {
+	viper.Set("casing", c)
+}

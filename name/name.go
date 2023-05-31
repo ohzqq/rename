@@ -68,7 +68,7 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	var n string
 	base := name.Base()
 
-	switch c := viper.GetInt("casing"); c {
+	switch c := cfg.Case(); c {
 	case Camel:
 		n = casing.Camel(base, trans...)
 	case Kebab:

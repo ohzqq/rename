@@ -39,6 +39,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 		"preview": PreviewRoute(c.names),
 		"padding": FormRoute(NewPaddingForm()),
 		"replace": FormRoute(FindReplaceForm()),
+		"case":    FormRoute(CaseForm()),
 	}
 	routes["default"] = routes[c.route]
 	return c.router.Init(routes)
