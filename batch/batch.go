@@ -41,8 +41,8 @@ func (r *Names) SetFiles(files []string) *Names {
 	for _, file := range files {
 		r.Files = append(r.Files, name.New(file))
 	}
-	if viper.GetInt("pad") == 0 {
-		viper.Set("pad", len(strconv.Itoa(len(r.Files))))
+	if viper.GetInt("zeroes") == 0 {
+		viper.Set("zeroes", len(strconv.Itoa(len(r.Files))))
 	}
 	return r
 }
@@ -59,7 +59,7 @@ func (b *Names) Transform() []map[string]string {
 	for _, file := range b.Files {
 		name := file.Transform(trans...)
 
-		if p := viper.GetInt("pad"); p >= 0 {
+		if p := viper.GetInt("zeroes"); p >= 0 {
 			name = xform.Pad(name, num)
 			num++
 		}

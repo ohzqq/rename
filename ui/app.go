@@ -4,6 +4,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/londek/reactea"
 	"github.com/londek/reactea/router"
+	"github.com/ohzqq/rename/batch"
 )
 
 type App struct {
@@ -12,7 +13,7 @@ type App struct {
 
 	router reactea.Component[router.Props]
 
-	names []map[string]string
+	names *batch.Names
 	route string
 }
 
@@ -20,7 +21,7 @@ type FormProps struct {
 	SetNames func([]map[string]string)
 }
 
-func New(names []map[string]string) *App {
+func New(names *batch.Names) *App {
 	return &App{
 		route:  "preview",
 		router: router.New(),
@@ -58,6 +59,6 @@ func (c *App) Render(width, height int) string {
 	return c.router.Render(width, height)
 }
 
-func (c *App) SetNames(names []map[string]string) {
+func (c *App) SetNames(names *batch.Names) {
 	c.names = names
 }

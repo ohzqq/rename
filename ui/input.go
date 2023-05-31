@@ -8,7 +8,6 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/londek/reactea"
 	"github.com/londek/reactea/router"
-	"github.com/ohzqq/rename/name"
 	"github.com/spf13/viper"
 )
 
@@ -31,7 +30,7 @@ func NewPaddingForm() *Padding {
 	inputs := make([]textinput.Model, 3)
 	inputs[zeroes] = textinput.New()
 	inputs[zeroes].SetValue("0")
-	if p := viper.GetInt("pad"); p > 0 {
+	if p := viper.GetInt("zeroes"); p > 0 {
 		inputs[zeroes].SetValue(strconv.Itoa(p))
 	}
 	inputs[zeroes].Width = 5
@@ -43,7 +42,7 @@ func NewPaddingForm() *Padding {
 	inputs[start].Prompt = "start: "
 
 	inputs[position] = textinput.New()
-	inputs[position].SetValue(name.PadPosition(viper.GetInt("pad_position")).String())
+	inputs[position].SetValue(viper.GetString("pad_position"))
 	inputs[position].Width = 5
 	inputs[position].Prompt = "pos: "
 	return &Padding{
@@ -71,6 +70,9 @@ func (c *Padding) Update(msg tea.Msg) tea.Cmd {
 		switch msg.Type {
 		case tea.KeyEnter:
 			if c.focused == len(c.inputs)-1 {
+				viper.Set("zeroes", c.inputs[zeroes].Value())
+				viper.Set("min", c.inputs[start].Value())
+				viper.Set("pad_position", c.inputs[position].Value())
 				reactea.SetCurrentRoute("preview")
 				return nil
 			}
@@ -103,6 +105,7 @@ func (c *Padding) Render(int, int) string {
 	v = append(v, c.inputs[zeroes].View())
 	v = append(v, c.inputs[start].View())
 	v = append(v, c.inputs[position].View())
+	v = append(v, padMenu)
 
 	return lipgloss.JoinVertical(lipgloss.Left, v...)
 }
@@ -118,3 +121,8 @@ func (c *Padding) prevInput() {
 		c.focused = len(c.inputs) - 1
 	}
 }
+
+const padMenu = `  [0] Start 
+  [1] Before Name
+  [2] After Name
+  [3] End`

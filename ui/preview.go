@@ -9,6 +9,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/londek/reactea"
 	"github.com/londek/reactea/router"
+	"github.com/ohzqq/rename/batch"
 	"golang.org/x/term"
 )
 
@@ -21,10 +22,11 @@ type Preview struct {
 	height  int
 	oldpath lipgloss.Style
 	newpath lipgloss.Style
+	names   []map[string]string
 }
 
 type PreviewProps struct {
-	Names []map[string]string
+	Names *batch.Names
 }
 
 var (
@@ -44,31 +46,16 @@ func NewPreview() *Preview {
 	}
 }
 
-func PreviewRoute(names []map[string]string) router.RouteInitializer {
+func PreviewRoute(names *batch.Names) router.RouteInitializer {
 	return func(router.Params) (reactea.SomeComponent, tea.Cmd) {
 		cmpnt := NewPreview()
-		props := PreviewProps{
-			Names: names,
-		}
-		return cmpnt, cmpnt.Init(props)
+		return cmpnt, cmpnt.Init(PreviewProps{Names: names})
 	}
 }
 
 func (c *Preview) Init(props PreviewProps) tea.Cmd {
 	c.UpdateProps(props)
-	var names []string
-	for _, name := range c.Props().Names {
-		var s strings.Builder
-		for og, n := range name {
-			if og != n {
-				s.WriteString(c.oldpath.Render(og))
-				s.WriteString(arrow.Render("\n=> "))
-				s.WriteString(c.newpath.Render(n))
-				names = append(names, s.String())
-			}
-		}
-	}
-	c.view.SetContent(strings.Join(names, "\n\n"))
+	c.names = c.Props().Names.Transform()
 	return nil
 }
 
@@ -80,7 +67,7 @@ func (c *Preview) Update(msg tea.Msg) tea.Cmd {
 	case tea.KeyMsg:
 		switch key := msg.String(); key {
 		case "y", "enter":
-			for _, name := range c.Props().Names {
+			for _, name := range c.names {
 				for og, n := range name {
 					os.Rename(og, n)
 				}
@@ -99,7 +86,25 @@ func (c *Preview) Update(msg tea.Msg) tea.Cmd {
 }
 
 func (c *Preview) Render(w, h int) string {
-	return c.view.View() + "\n" + confirm.Render("rename? (y|enter/no)")
+	var names []string
+	for _, name := range c.names {
+		var s strings.Builder
+		for og, n := range name {
+			if og != n {
+				s.WriteString(c.oldpath.Render(og))
+				s.WriteString(arrow.Render("\n=> "))
+				s.WriteString(c.newpath.Render(n))
+				names = append(names, s.String())
+			}
+		}
+	}
+	c.view.SetContent(strings.Join(names, "\n\n"))
+
+	return lipgloss.JoinVertical(
+		lipgloss.Left,
+		c.view.View(),
+		confirm.Render("rename? (y|enter/no)"),
+	)
 }
 
 func TermSize() (int, int) {

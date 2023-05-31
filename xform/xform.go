@@ -26,7 +26,7 @@ func Sanitize(s string) string {
 }
 
 func Pad(in string, num int) string {
-	pad := "%0" + strconv.Itoa(viper.GetInt("pad")) + "d"
+	pad := "%0" + strconv.Itoa(viper.GetInt("zeroes")) + "d"
 	switch pos := viper.GetInt("pad_position"); name.PadPosition(pos) {
 	case name.PosStart, name.PosBeforeName:
 		pad = pad + "%s"
