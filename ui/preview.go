@@ -8,6 +8,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/londek/reactea"
+	"github.com/londek/reactea/router"
 	"golang.org/x/term"
 )
 
@@ -40,6 +41,16 @@ func NewPreview() *Preview {
 		oldpath: d,
 		newpath: d.Copy().Foreground(lipgloss.Color("#eeeeee")),
 		view:    viewport.New(w, h-1),
+	}
+}
+
+func PreviewRoute(names []map[string]string) router.RouteInitializer {
+	return func(router.Params) (reactea.SomeComponent, tea.Cmd) {
+		cmpnt := NewPreview()
+		props := PreviewProps{
+			Names: names,
+		}
+		return cmpnt, cmpnt.Init(props)
 	}
 }
 

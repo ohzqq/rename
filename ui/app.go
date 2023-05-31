@@ -13,7 +13,7 @@ type App struct {
 	router reactea.Component[router.Props]
 
 	names []map[string]string
-	input string
+	route string
 }
 
 type FormProps struct {
@@ -22,25 +22,24 @@ type FormProps struct {
 
 func New(names []map[string]string) *App {
 	return &App{
+		route:  "preview",
 		router: router.New(),
 		names:  names,
 	}
 }
 
+func (c *App) Route(r string) *App {
+	c.route = r
+	return c
+}
+
 func (c *App) Init(reactea.NoProps) tea.Cmd {
-	return c.router.Init(map[string]router.RouteInitializer{
-		"default": func(router.Params) (reactea.SomeComponent, tea.Cmd) {
-			cmpnt := NewPreview()
-			props := PreviewProps{
-				Names: c.names,
-			}
-			return cmpnt, cmpnt.Init(props)
-		},
-		"padding": func(router.Params) (reactea.SomeComponent, tea.Cmd) {
-			cmpnt := NewPaddingForm()
-			return cmpnt, cmpnt.Init(reactea.NoProps{})
-		},
-	})
+	routes := map[string]router.RouteInitializer{
+		"preview": PreviewRoute(c.names),
+		"padding": PaddingRoute(),
+	}
+	routes["default"] = routes[c.route]
+	return c.router.Init(routes)
 }
 
 func (c *App) Update(msg tea.Msg) tea.Cmd {
