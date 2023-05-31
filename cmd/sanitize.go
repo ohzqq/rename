@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/londek/reactea"
-	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/ui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -17,16 +14,15 @@ var sanitizeCmd = &cobra.Command{
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Set("sanitize", true)
-		fmt.Printf("%v\n", cfg.Padding())
 		names := ValidateArgs(args)
-		pre := ui.New(names).Route("replace")
+		pre := ui.New(names).Route("padding")
 		program := reactea.NewProgram(pre)
 
 		if err := program.Start(); err != nil {
 			panic(err)
 		}
-		fmt.Printf("%v\n", cfg.Padding())
-		//fmt.Println(names)
+
+		//fmt.Println(t)
 	},
 }
 

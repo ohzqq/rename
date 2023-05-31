@@ -21,21 +21,32 @@ func NewPaddingForm() *Form {
 	}
 	inputs[zeroes].Width = 5
 	inputs[zeroes].Prompt = "zeroes: "
+	inputs[zeroes].Validate = ValidateInt
 
 	inputs[start] = NewInput(cfg.SetStart)
 	inputs[start].SetValue(strconv.Itoa(cfg.Padding().Start))
 	inputs[start].Width = 5
 	inputs[start].Prompt = "start: "
+	inputs[start].Validate = ValidateInt
 
 	inputs[position] = NewInput(cfg.SetPosition)
 	inputs[position].SetValue(strconv.Itoa(cfg.Padding().Position))
 	inputs[position].Width = 5
 	inputs[position].Prompt = padMenu
+	inputs[position].Validate = ValidateInt
 
 	return &Form{
 		inputs:  inputs,
 		focused: 0,
 	}
+}
+
+func ValidateInt(a string) error {
+	_, err := strconv.Atoi(a)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 const padMenu = `pos:   
