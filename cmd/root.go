@@ -31,11 +31,11 @@ func Execute() {
 
 func init() {
 	viper.SetDefault("sep", "_")
-	viper.SetDefault("min", 1)
+	viper.SetDefault("pad.start", 1)
 	viper.SetDefault("max", -1)
 	viper.SetDefault("casing", name.Snake)
-	viper.SetDefault("pad_position", name.PosEnd)
-	viper.SetDefault("zeroes", -1)
+	viper.SetDefault("pad.position", name.PosEnd)
+	viper.SetDefault("pad.zeroes", -1)
 	viper.SetDefault("asciiify", false)
 	viper.SetDefault("sanitize", false)
 
@@ -45,13 +45,13 @@ func init() {
 	viper.BindPFlag("sep", rootCmd.PersistentFlags().Lookup("sep"))
 
 	rootCmd.PersistentFlags().Int("min", 1, "staring num for enumeration")
-	viper.BindPFlag("min", rootCmd.PersistentFlags().Lookup("min"))
+	viper.BindPFlag("pad.start", rootCmd.PersistentFlags().Lookup("min"))
 
 	rootCmd.PersistentFlags().Int("max", -1, "end num for enumeration")
 	viper.BindPFlag("max", rootCmd.PersistentFlags().Lookup("max"))
 
 	rootCmd.PersistentFlags().IntP("zeroes", "d", -1, "zero pad files")
-	viper.BindPFlag("zeroes", rootCmd.PersistentFlags().Lookup("zeroes"))
+	viper.BindPFlag("pad.zeroes", rootCmd.PersistentFlags().Lookup("zeroes"))
 
 	rootCmd.PersistentFlags().BoolP("sanitize", "z", false, "asiify and remove characters")
 	viper.BindPFlag("sanitize", rootCmd.PersistentFlags().Lookup("sanitize"))

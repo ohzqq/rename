@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/danielgtaylor/casing"
+	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/name"
 	"github.com/ohzqq/rename/xform"
 	"github.com/spf13/viper"
@@ -41,8 +42,8 @@ func (r *Names) SetFiles(files []string) *Names {
 	for _, file := range files {
 		r.Files = append(r.Files, name.New(file))
 	}
-	if viper.GetInt("zeroes") == 0 {
-		viper.Set("zeroes", len(strconv.Itoa(len(r.Files))))
+	if cfg.Padding().Zeroes == 0 {
+		cfg.Padding().SetZeroes(len(strconv.Itoa(len(r.Files))))
 	}
 	return r
 }
@@ -55,11 +56,11 @@ func (b *Names) Transform() []map[string]string {
 		trans = append(trans, xform.Asciiify)
 	}
 
-	num := viper.GetInt("min")
+	num := viper.GetInt("pad.start")
 	for _, file := range b.Files {
 		name := file.Transform(trans...)
 
-		if p := viper.GetInt("zeroes"); p >= 0 {
+		if p := viper.GetInt("pad.zeroes"); p >= 0 {
 			name = xform.Pad(name, num)
 			num++
 		}

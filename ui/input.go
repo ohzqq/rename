@@ -8,7 +8,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/londek/reactea"
 	"github.com/londek/reactea/router"
-	"github.com/spf13/viper"
+	"github.com/ohzqq/rename/cfg"
 )
 
 type Padding struct {
@@ -30,19 +30,19 @@ func NewPaddingForm() *Padding {
 	inputs := make([]textinput.Model, 3)
 	inputs[zeroes] = textinput.New()
 	inputs[zeroes].SetValue("0")
-	if p := viper.GetInt("zeroes"); p > 0 {
+	if p := cfg.Padding().Zeroes; p > 0 {
 		inputs[zeroes].SetValue(strconv.Itoa(p))
 	}
 	inputs[zeroes].Width = 5
 	inputs[zeroes].Prompt = "zeroes: "
 
 	inputs[start] = textinput.New()
-	inputs[start].SetValue(viper.GetString("min"))
+	inputs[start].SetValue(strconv.Itoa(cfg.Padding().Start))
 	inputs[start].Width = 5
 	inputs[start].Prompt = "start: "
 
 	inputs[position] = textinput.New()
-	inputs[position].SetValue(viper.GetString("pad_position"))
+	inputs[position].SetValue(strconv.Itoa(cfg.Padding().Position))
 	inputs[position].Width = 5
 	inputs[position].Prompt = "pos: "
 	return &Padding{
@@ -70,9 +70,9 @@ func (c *Padding) Update(msg tea.Msg) tea.Cmd {
 		switch msg.Type {
 		case tea.KeyEnter:
 			if c.focused == len(c.inputs)-1 {
-				viper.Set("zeroes", c.inputs[zeroes].Value())
-				viper.Set("min", c.inputs[start].Value())
-				viper.Set("pad_position", c.inputs[position].Value())
+				cfg.Padding().SetZeroes(c.inputs[zeroes].Value())
+				cfg.Padding().SetStart(c.inputs[start].Value())
+				cfg.Padding().SetPosition(c.inputs[position].Value())
 				reactea.SetCurrentRoute("preview")
 				return nil
 			}

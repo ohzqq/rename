@@ -9,6 +9,7 @@ import (
 
 	"github.com/danielgtaylor/casing"
 	"github.com/gosimple/unidecode"
+	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/name"
 	"github.com/spf13/viper"
 )
@@ -26,8 +27,8 @@ func Sanitize(s string) string {
 }
 
 func Pad(in string, num int) string {
-	pad := "%0" + strconv.Itoa(viper.GetInt("zeroes")) + "d"
-	switch pos := viper.GetInt("pad_position"); name.PadPosition(pos) {
+	pad := "%0" + strconv.Itoa(cfg.Padding().Zeroes) + "d"
+	switch pos := cfg.Padding().Position; name.PadPosition(pos) {
 	case name.PosStart, name.PosBeforeName:
 		pad = pad + "%s"
 	case name.PosEnd, name.PosAfterName:
