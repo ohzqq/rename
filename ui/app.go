@@ -37,7 +37,7 @@ func (c *App) Route(r string) *App {
 func (c *App) Init(reactea.NoProps) tea.Cmd {
 	routes := map[string]router.RouteInitializer{
 		"preview": PreviewRoute(c.names),
-		"padding": PaddingRoute(),
+		"padding": FormRoute(),
 	}
 	routes["default"] = routes[c.route]
 	return c.router.Init(routes)

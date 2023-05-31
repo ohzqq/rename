@@ -11,7 +11,7 @@ import (
 	"github.com/ohzqq/rename/cfg"
 )
 
-type Padding struct {
+type Form struct {
 	reactea.BasicComponent
 	reactea.BasicPropfulComponent[reactea.NoProps]
 
@@ -20,13 +20,18 @@ type Padding struct {
 	focused int
 }
 
+type Input struct {
+	textinput.Model
+	Set func(any)
+}
+
 const (
 	zeroes = iota
 	start
 	position
 )
 
-func NewPaddingForm() *Padding {
+func NewPaddingForm() *Form {
 	inputs := make([]textinput.Model, 3)
 	inputs[zeroes] = textinput.New()
 	inputs[zeroes].SetValue("0")
@@ -45,24 +50,24 @@ func NewPaddingForm() *Padding {
 	inputs[position].SetValue(strconv.Itoa(cfg.Padding().Position))
 	inputs[position].Width = 5
 	inputs[position].Prompt = "pos: "
-	return &Padding{
+	return &Form{
 		inputs:  inputs,
 		focused: 0,
 	}
 }
 
-func PaddingRoute() router.RouteInitializer {
+func FormRoute() router.RouteInitializer {
 	return func(router.Params) (reactea.SomeComponent, tea.Cmd) {
 		cmpnt := NewPaddingForm()
 		return cmpnt, cmpnt.Init(reactea.NoProps{})
 	}
 }
 
-func (c *Padding) Init(reactea.NoProps) tea.Cmd {
+func (c *Form) Init(reactea.NoProps) tea.Cmd {
 	return c.inputs[c.focused].Focus()
 }
 
-func (c *Padding) Update(msg tea.Msg) tea.Cmd {
+func (c *Form) Update(msg tea.Msg) tea.Cmd {
 	var cmds []tea.Cmd = make([]tea.Cmd, len(c.inputs))
 
 	switch msg := msg.(type) {
@@ -99,7 +104,7 @@ func (c *Padding) Update(msg tea.Msg) tea.Cmd {
 	return tea.Batch(cmds...)
 }
 
-func (c *Padding) Render(int, int) string {
+func (c *Form) Render(int, int) string {
 	var v []string
 
 	v = append(v, c.inputs[zeroes].View())
@@ -110,11 +115,11 @@ func (c *Padding) Render(int, int) string {
 	return lipgloss.JoinVertical(lipgloss.Left, v...)
 }
 
-func (c *Padding) nextInput() {
+func (c *Form) nextInput() {
 	c.focused = (c.focused + 1) % len(c.inputs)
 }
 
-func (c *Padding) prevInput() {
+func (c *Form) prevInput() {
 	c.focused--
 	// Wrap around
 	if c.focused < 0 {
