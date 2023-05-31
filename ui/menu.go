@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/londek/reactea"
 	"github.com/londek/reactea/router"
 )
@@ -25,7 +26,10 @@ func initMenu(dir int) router.RouteInitializer {
 func MenuRenderer(props MenuProps, w, h int) string {
 	switch props {
 	case horizontal:
-		return strings.Join(menuPrompt, " | ")
+		return lipgloss.NewStyle().
+			Background(lipgloss.Color("#afffaf")).
+			Foreground(lipgloss.Color("#262626")).
+			Render(strings.Join(menuPrompt, "|"))
 	case vertical:
 		return strings.Join(menuPrompt, "\n")
 	default:
@@ -34,10 +38,12 @@ func MenuRenderer(props MenuProps, w, h int) string {
 }
 
 var menuPrompt = []string{
-	"[F1] Case",
-	"[F2] Padding",
-	"[F3] Replace",
-	"[F4] Prefix",
-	"[F5] Suffix",
-	"[esc] Menu",
+	"[F1]Sanitize",
+	"[F2]Case",
+	"[F3]Padding",
+	"[F4]Replace",
+	"[F5]Prefix",
+	"[F6]Suffix",
+	"[F12]Preview",
+	"[esc]Menu",
 }

@@ -84,3 +84,7 @@ func SetSuffix(c any) {
 func SetPrefix(c any) {
 	viper.Set("prefix", c)
 }
+
+func Sanitize(c any) {
+	viper.Set("sanitize", true)
+}

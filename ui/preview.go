@@ -42,7 +42,7 @@ func NewPreview() *Preview {
 		height:  h,
 		oldpath: d,
 		newpath: d.Copy().Foreground(lipgloss.Color("#eeeeee")),
-		view:    viewport.New(w, h-1),
+		view:    viewport.New(w, h-2),
 	}
 }
 

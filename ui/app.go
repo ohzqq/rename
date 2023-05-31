@@ -37,12 +37,13 @@ func (c *App) Route(r string) *App {
 
 func (c *App) Init(reactea.NoProps) tea.Cmd {
 	routes := map[string]router.RouteInitializer{
-		"preview": PreviewRoute(c.names),
-		"padding": FormRoute(NewPaddingForm()),
-		"replace": FormRoute(FindReplaceForm()),
-		"case":    FormRoute(CaseForm()),
-		"prefix":  FormRoute(PrefixForm()),
-		"suffix":  FormRoute(SuffixForm()),
+		"preview":  PreviewRoute(c.names),
+		"padding":  FormRoute(NewPaddingForm()),
+		"replace":  FormRoute(FindReplaceForm()),
+		"case":     FormRoute(CaseForm()),
+		"prefix":   FormRoute(PrefixForm()),
+		"suffix":   FormRoute(SuffixForm()),
+		"sanitize": FormRoute(SanitizeForm()),
 	}
 	routes["default"] = initMenu(vertical)
 	return c.router.Init(routes)
@@ -53,20 +54,22 @@ func (c *App) Update(msg tea.Msg) tea.Cmd {
 	case tea.KeyMsg:
 		// ctrl+c support
 		switch msg.String() {
-		case "esc":
+		case "esc", "?":
 			reactea.SetCurrentRoute("default")
 		case "f1":
-			reactea.SetCurrentRoute("case")
+			reactea.SetCurrentRoute("sanitize")
 		case "f2":
-			reactea.SetCurrentRoute("padding")
+			reactea.SetCurrentRoute("case")
 		case "f3":
-			reactea.SetCurrentRoute("replace")
+			reactea.SetCurrentRoute("padding")
 		case "f4":
-			reactea.SetCurrentRoute("prefix")
+			reactea.SetCurrentRoute("replace")
 		case "f5":
+			reactea.SetCurrentRoute("prefix")
+		case "f6":
 			reactea.SetCurrentRoute("suffix")
-		//case "enter":
-		//reactea.SetCurrentRoute("preview")
+		case "f12":
+			reactea.SetCurrentRoute("preview")
 		case "ctrl+c":
 			return reactea.Destroy
 		}
