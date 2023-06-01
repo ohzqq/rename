@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/ohzqq/rename/name"
+	"github.com/ohzqq/rename/cfg"
+	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // lowerCmd represents the lower command
@@ -13,7 +13,7 @@ var lowerCmd = &cobra.Command{
 	Use:   "lower",
 	Short: "names to lower case",
 	Run: func(cmd *cobra.Command, args []string) {
-		viper.Set("casing", name.Lower)
+		cfg.SetCase(opt.Lower)
 		names := ValidateArgs(args).Transform()
 		fmt.Println(names)
 	},

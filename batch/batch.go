@@ -9,6 +9,7 @@ import (
 	"github.com/danielgtaylor/casing"
 	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/name"
+	"github.com/ohzqq/rename/opt"
 	"github.com/ohzqq/rename/xform"
 	"github.com/spf13/viper"
 )
@@ -53,7 +54,7 @@ func (b *Names) Transform() []map[string]string {
 	var names []map[string]string
 	var trans []casing.TransformFunc
 
-	if viper.GetBool("sanitize") || viper.GetBool("asciiify") {
+	if viper.GetBool(opt.Clean) || viper.GetBool(opt.Asciiify) {
 		trans = append(trans, xform.Asciiify)
 	}
 
@@ -61,7 +62,7 @@ func (b *Names) Transform() []map[string]string {
 	for _, file := range b.Files {
 		n := file.Transform(trans...)
 
-		if viper.IsSet("find") {
+		if viper.IsSet(opt.Find) {
 			n = xform.Replace(n)
 		}
 
@@ -72,23 +73,23 @@ func (b *Names) Transform() []map[string]string {
 		}
 
 		var pre string
-		if viper.IsSet("prefix") {
-			pre = viper.GetString("prefix")
+		if viper.IsSet(opt.Prefix) {
+			pre = cfg.Prefix()
 		}
 
 		var suf string
-		if viper.IsSet("suffix") {
-			suf = viper.GetString("suffix")
+		if viper.IsSet(opt.Suffix) {
+			suf = cfg.Suffix()
 		}
 
-		switch pos := cfg.Padding().Position; name.PadPosition(pos) {
-		case name.Beginning:
+		switch pos := cfg.Position(); pos {
+		case opt.Beginning:
 			n = fmt.Sprint(padding, pre, n, suf)
-		case name.BeforeName:
+		case opt.BeforeName:
 			n = fmt.Sprint(pre, padding, n, suf)
-		case name.End:
+		case opt.End:
 			n = fmt.Sprint(pre, n, suf, padding)
-		case name.AfterName:
+		case opt.AfterName:
 			n = fmt.Sprint(pre, n, padding, suf)
 		}
 

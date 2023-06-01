@@ -8,6 +8,7 @@ import (
 
 	"github.com/danielgtaylor/casing"
 	"github.com/ohzqq/rename/cfg"
+	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/viper"
 )
 
@@ -50,7 +51,7 @@ func (fn *Name) Parse(n string) error {
 }
 
 func (fn *Name) Base() string {
-	if viper.GetBool("cwd") {
+	if viper.GetBool(opt.CWD) {
 		if fn.Dir != "" {
 			return filepath.Base(fn.Dir)
 		} else {
@@ -69,18 +70,18 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	base := name.Base()
 
 	switch c := cfg.Case(); c {
-	case Camel:
+	case opt.Camel:
 		n = casing.Camel(base, trans...)
-	case Kebab:
+	case opt.Kebab:
 		n = casing.Kebab(base, trans...)
-	case LowerCamel:
+	case opt.LowerCamel:
 		n = casing.LowerCamel(base, trans...)
-	case Snake:
+	case opt.Snake:
 		n = casing.Snake(base, trans...)
-	case Lower:
+	case opt.Lower:
 		trans = append(trans, strings.ToLower)
 		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
-	case Upper:
+	case opt.Upper:
 		trans = append(trans, strings.ToUpper)
 		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	default:
@@ -88,22 +89,3 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	}
 	return n
 }
-
-const (
-	Camel = iota
-	Kebab
-	LowerCamel
-	Snake
-	Lower
-	Upper
-)
-
-type PadPosition int
-
-//go:generate stringer -trimprefix Pos -type PadPosition
-const (
-	Beginning = iota
-	BeforeName
-	AfterName
-	End
-)

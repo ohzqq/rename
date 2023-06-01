@@ -12,6 +12,7 @@ const (
 	Zeroes   = "zeroes"
 	Position = "position"
 	Sep      = "sep"
+	Asciiify = "asciiify"
 )
 
 const (
@@ -23,9 +24,12 @@ const (
 	Upper
 )
 
+//go:generate stringer -type PadPosition -linecomment
+type PadPosition int
+
 const (
-	Beginning = iota
-	BeforeName
-	AfterName
+	Beginning  PadPosition = iota
+	BeforeName             // Before Name
+	AfterName              // After Name
 	End
 )

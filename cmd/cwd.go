@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/ohzqq/rename/cfg"
+	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -12,9 +14,9 @@ var cwdCmd = &cobra.Command{
 	Use:   "cwd",
 	Short: "rename files using the cwd or base dir",
 	Run: func(cmd *cobra.Command, args []string) {
-		viper.Set("cwd", true)
-		if viper.GetInt("pad") == -1 {
-			viper.Set("pad", 0)
+		viper.Set(opt.CWD, true)
+		if cfg.Zeroes() == -1 {
+			cfg.SetZeroes(0)
 		}
 		names := ValidateArgs(args).Transform()
 		fmt.Println(names)

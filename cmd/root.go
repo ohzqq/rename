@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/ohzqq/rename/batch"
-	"github.com/ohzqq/rename/name"
+	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -30,42 +30,41 @@ func Execute() {
 }
 
 func init() {
-	viper.SetDefault("sep", "_")
-	viper.SetDefault("pad.start", 1)
-	viper.SetDefault("casing", name.Snake)
-	viper.SetDefault("pad.position", name.End)
-	viper.SetDefault("max", -1)
-	viper.SetDefault("pad.zeroes", -1)
-	viper.SetDefault("asciiify", false)
-	viper.SetDefault("sanitize", false)
+	viper.SetDefault(opt.Sep, "_")
+	viper.SetDefault(opt.Casing, opt.Snake)
+	viper.SetDefault(opt.Start, 1)
+	viper.SetDefault(opt.Position, opt.End)
+	viper.SetDefault(opt.Zeroes, -1)
+	viper.SetDefault(opt.Asciiify, false)
+	viper.SetDefault(opt.Clean, false)
 
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
 
-	rootCmd.PersistentFlags().String("sep", "", "separator for joining words")
-	viper.BindPFlag("sep", rootCmd.PersistentFlags().Lookup("sep"))
+	rootCmd.PersistentFlags().String(opt.Sep, "", "separator for joining words")
+	viper.BindPFlag(opt.Sep, rootCmd.PersistentFlags().Lookup(opt.Sep))
 
-	rootCmd.PersistentFlags().Int("min", 1, "staring num for enumeration")
-	viper.BindPFlag("pad.start", rootCmd.PersistentFlags().Lookup("min"))
+	rootCmd.PersistentFlags().Int(opt.Start, 1, "staring num for enumeration")
+	viper.BindPFlag(opt.Start, rootCmd.PersistentFlags().Lookup(opt.Start))
 
-	rootCmd.PersistentFlags().IntP("zeroes", "z", -1, "zero pad files")
-	viper.BindPFlag("pad.zeroes", rootCmd.PersistentFlags().Lookup("zeroes"))
+	rootCmd.PersistentFlags().IntP(opt.Zeroes, "z", -1, "zero pad files")
+	viper.BindPFlag(opt.Zeroes, rootCmd.PersistentFlags().Lookup(opt.Zeroes))
 
-	rootCmd.PersistentFlags().BoolP("clean", "c", false, "asciify and remove characters")
-	viper.BindPFlag("sanitize", rootCmd.PersistentFlags().Lookup("clean"))
+	rootCmd.PersistentFlags().BoolP(opt.Clean, "c", false, "asciify and remove characters")
+	viper.BindPFlag(opt.Clean, rootCmd.PersistentFlags().Lookup(opt.Clean))
 
-	rootCmd.PersistentFlags().Bool("cwd", false, "use cwd as basename")
-	viper.BindPFlag("cwd", rootCmd.PersistentFlags().Lookup("cwd"))
+	rootCmd.PersistentFlags().Bool(opt.CWD, false, "use cwd as basename")
+	viper.BindPFlag(opt.CWD, rootCmd.PersistentFlags().Lookup(opt.CWD))
 
-	rootCmd.PersistentFlags().StringP("prefix", "p", "", "add a prefix")
-	viper.BindPFlag("prefix", rootCmd.PersistentFlags().Lookup("prefix"))
-	rootCmd.PersistentFlags().StringP("suffix", "s", "", "add a suffix")
-	viper.BindPFlag("suffix", rootCmd.PersistentFlags().Lookup("suffix"))
+	rootCmd.PersistentFlags().StringP(opt.Prefix, "p", "", "add a prefix")
+	viper.BindPFlag(opt.Prefix, rootCmd.PersistentFlags().Lookup(opt.Prefix))
+	rootCmd.PersistentFlags().StringP(opt.Suffix, "s", "", "add a suffix")
+	viper.BindPFlag(opt.Suffix, rootCmd.PersistentFlags().Lookup(opt.Suffix))
 
-	rootCmd.PersistentFlags().StringP("find", "f", "", "find regex")
-	viper.BindPFlag("find", rootCmd.PersistentFlags().Lookup("find"))
-	rootCmd.PersistentFlags().StringP("replace", "r", "", "replace regex")
-	viper.BindPFlag("replace", rootCmd.PersistentFlags().Lookup("replace"))
-	rootCmd.MarkFlagsRequiredTogether("find", "replace")
+	rootCmd.PersistentFlags().StringP(opt.Find, "f", "", "find regex")
+	viper.BindPFlag(opt.Find, rootCmd.PersistentFlags().Lookup(opt.Find))
+	rootCmd.PersistentFlags().StringP(opt.Replace, "r", "", "replace regex")
+	viper.BindPFlag(opt.Replace, rootCmd.PersistentFlags().Lookup(opt.Replace))
+	rootCmd.MarkFlagsRequiredTogether(opt.Find, opt.Replace)
 }
 
 func ValidateArgs(args []string) *batch.Names {

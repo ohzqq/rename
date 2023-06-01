@@ -4,6 +4,7 @@ import (
 	"log"
 	"regexp"
 
+	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/viper"
 )
 
@@ -15,34 +16,46 @@ type PaddingCfg struct {
 
 func Padding() *PaddingCfg {
 	return &PaddingCfg{
-		Zeroes:   viper.GetInt("pad.zeroes"),
-		Start:    viper.GetInt("pad.start"),
-		Position: viper.GetInt("pad.position"),
+		Zeroes:   viper.GetInt(opt.Zeroes),
+		Start:    viper.GetInt(opt.Start),
+		Position: viper.GetInt(opt.Position),
 	}
 }
 
+func Zeroes() int {
+	return viper.GetInt(opt.Zeroes)
+}
+
 func SetZeroes(num any) {
-	viper.Set("pad.zeroes", num)
+	viper.Set(opt.Zeroes, num)
+}
+
+func Start() int {
+	return viper.GetInt(opt.Start)
 }
 
 func SetStart(num any) {
-	viper.Set("pad.start", num)
+	viper.Set(opt.Start, num)
+}
+
+func Position() opt.PadPosition {
+	return opt.PadPosition(viper.GetInt(opt.Start))
 }
 
 func SetPosition(num any) {
-	viper.Set("pad.position", num)
+	viper.Set(opt.Position, num)
 }
 
 func Sep() string {
-	return viper.GetString("sep")
+	return viper.GetString(opt.Sep)
 }
 
 func SetSep(c any) {
-	viper.Set("sep", c)
+	viper.Set(opt.Sep, c)
 }
 
 func Find() *regexp.Regexp {
-	regex, err := regexp.Compile(viper.GetString("find"))
+	regex, err := regexp.Compile(viper.GetString(opt.Find))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,39 +63,47 @@ func Find() *regexp.Regexp {
 }
 
 func SetFind(f any) {
-	viper.Set("find", f)
+	viper.Set(opt.Find, f)
 }
 
 func Replace() string {
-	return viper.GetString("replace")
+	return viper.GetString(opt.Replace)
 }
 
 func SetReplace(f any) {
-	viper.Set("replace", f)
+	viper.Set(opt.Replace, f)
 }
 
 func Case() int {
-	return viper.GetInt("casing")
+	return viper.GetInt(opt.Casing)
 }
 
 func SetCase(c any) {
-	viper.Set("casing", c)
+	viper.Set(opt.Casing, c)
+}
+
+func Suffix() string {
+	return viper.GetString(opt.Suffix)
 }
 
 func SetSuffix(c any) {
-	viper.Set("suffix", c)
+	viper.Set(opt.Suffix, c)
+}
+
+func Prefix() string {
+	return viper.GetString(opt.Prefix)
 }
 
 func SetPrefix(c any) {
-	viper.Set("prefix", c)
+	viper.Set(opt.Prefix, c)
 }
 
 func Sanitize(c any) {
-	viper.Set("sanitize", true)
+	viper.Set(opt.Clean, true)
 }
 
 func UseCWD(c any) {
-	viper.Set("cwd", true)
+	viper.Set(opt.CWD, true)
 }
 
 func NewName(c any) {
