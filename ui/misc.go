@@ -6,7 +6,7 @@ import (
 	"github.com/ohzqq/rename/cfg"
 )
 
-func MiscForm() *Form {
+func MiscForm() []*Input {
 	inputs := make([]*Input, 3)
 
 	inputs[0] = NewInput()
@@ -22,7 +22,7 @@ func MiscForm() *Form {
 	inputs[2].Prompt = "sanitize (y/n): "
 	inputs[2].Validate = ValidateBool
 
-	return NewForm(inputs)
+	return inputs
 }
 
 func ValidateBool(v string) error {

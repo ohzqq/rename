@@ -18,10 +18,6 @@ type App struct {
 	route string
 }
 
-type FormProps struct {
-	SetNames func([]map[string]string)
-}
-
 func New(names *batch.Names) *App {
 	return &App{
 		route:  "preview",
@@ -38,10 +34,10 @@ func (c *App) Route(r string) *App {
 func (c *App) Init(reactea.NoProps) tea.Cmd {
 	routes := map[string]router.RouteInitializer{
 		View.String():    PreviewRoute(c.names),
-		Num.String():     FormRoute(NewPaddingForm()),
-		Replace.String(): FormRoute(FindReplaceForm()),
+		Num.String():     FormRoute(NewPaddingForm()...),
+		Replace.String(): FormRoute(FindReplaceForm()...),
 		Case.String():    FormRoute(CaseForm()),
-		Misc.String():    FormRoute(MiscForm()),
+		Misc.String():    FormRoute(MiscForm()...),
 		Menu.String():    initMenu(vertical),
 	}
 	routes["default"] = routes[Num.String()]

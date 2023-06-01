@@ -9,7 +9,7 @@ const (
 	replace
 )
 
-func FindReplaceForm() *Form {
+func FindReplaceForm() []*Input {
 	inputs := make([]*Input, 2)
 
 	inputs[find] = NewInput()
@@ -20,8 +20,5 @@ func FindReplaceForm() *Form {
 	inputs[replace].Init(InputProps{SetValue: cfg.SetReplace})
 	inputs[replace].Prompt = "replace with: "
 
-	return &Form{
-		inputs:  inputs,
-		focused: 0,
-	}
+	return inputs
 }

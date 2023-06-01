@@ -11,7 +11,6 @@ type Input struct {
 	reactea.BasicPropfulComponent[InputProps]
 
 	textinput.Model
-	SetValue func(any)
 }
 
 type InputProps struct {

@@ -10,42 +10,45 @@ import (
 
 type Form struct {
 	reactea.BasicComponent
-	reactea.BasicPropfulComponent[reactea.NoProps]
-
-	inputs []*Input
+	reactea.BasicPropfulComponent[FormProps]
 
 	focused int
 }
 
-func NewForm(inputs []*Input) *Form {
+type FormProps struct {
+	Inputs []*Input
+}
+
+func NewForm() *Form {
 	return &Form{
-		inputs:  inputs,
 		focused: 0,
 	}
 }
 
-func FormRoute(cmpnt *Form) router.RouteInitializer {
+func FormRoute(inputs ...*Input) router.RouteInitializer {
 	return func(router.Params) (reactea.SomeComponent, tea.Cmd) {
-		return cmpnt, cmpnt.Init(reactea.NoProps{})
+		cmpnt := NewForm()
+		return cmpnt, cmpnt.Init(FormProps{Inputs: inputs})
 	}
 }
 
-func (c *Form) Init(reactea.NoProps) tea.Cmd {
-	return c.inputs[c.focused].Focus()
+func (c *Form) Init(props FormProps) tea.Cmd {
+	c.UpdateProps(props)
+	return c.Props().Inputs[c.focused].Focus()
 }
 
 func (c *Form) Update(msg tea.Msg) tea.Cmd {
-	var cmds []tea.Cmd = make([]tea.Cmd, len(c.inputs))
+	var cmds []tea.Cmd = make([]tea.Cmd, len(c.Props().Inputs))
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.Type {
 		case tea.KeyEnter:
-			if c.focused == len(c.inputs)-1 {
-				for i := range c.inputs {
-					c.inputs[i].Save()
+			if c.focused == len(c.Props().Inputs)-1 {
+				for i := range c.Props().Inputs {
+					c.Props().Inputs[i].Save()
 				}
-				reactea.SetCurrentRoute("preview")
+				reactea.SetCurrentRoute(View.String())
 				return nil
 			}
 			c.nextInput()
@@ -58,14 +61,14 @@ func (c *Form) Update(msg tea.Msg) tea.Cmd {
 		case "ctrl+c":
 			return reactea.Destroy
 		}
-		for i := range c.inputs {
-			c.inputs[i].Blur()
+		for i := range c.Props().Inputs {
+			c.Props().Inputs[i].Blur()
 		}
-		c.inputs[c.focused].Focus()
+		c.Props().Inputs[c.focused].Focus()
 	}
 
-	for i := range c.inputs {
-		c.inputs[i], cmds[i] = c.inputs[i].Update(msg)
+	for i := range c.Props().Inputs {
+		c.Props().Inputs[i], cmds[i] = c.Props().Inputs[i].Update(msg)
 	}
 
 	return tea.Batch(cmds...)
@@ -74,21 +77,21 @@ func (c *Form) Update(msg tea.Msg) tea.Cmd {
 func (c *Form) Render(int, int) string {
 	var v []string
 
-	for i := range c.inputs {
-		v = append(v, c.inputs[i].View())
+	for i := range c.Props().Inputs {
+		v = append(v, c.Props().Inputs[i].View())
 	}
 
 	return lipgloss.JoinVertical(lipgloss.Left, v...)
 }
 
 func (c *Form) nextInput() {
-	c.focused = (c.focused + 1) % len(c.inputs)
+	c.focused = (c.focused + 1) % len(c.Props().Inputs)
 }
 
 func (c *Form) prevInput() {
 	c.focused--
 	// Wrap around
 	if c.focused < 0 {
-		c.focused = len(c.inputs) - 1
+		c.focused = len(c.Props().Inputs) - 1
 	}
 }
