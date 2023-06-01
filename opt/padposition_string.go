@@ -14,9 +14,9 @@ func _() {
 	_ = x[End-3]
 }
 
-const _PadPosition_name = "BeginningBefore NameAfter NameEnd"
+const _PadPosition_name = "BeginningBefore NameAfter NameEnd (default)"
 
-var _PadPosition_index = [...]uint8{0, 9, 20, 30, 33}
+var _PadPosition_index = [...]uint8{0, 9, 20, 30, 43}
 
 func (i PadPosition) String() string {
 	if i < 0 || i >= PadPosition(len(_PadPosition_index)-1) {

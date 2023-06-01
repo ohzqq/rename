@@ -1,7 +1,7 @@
 package opt
 
 const (
-	Clean    = "clean"
+	Tidy     = "tidy"
 	Find     = "find"
 	Replace  = "replace"
 	Suffix   = "suffix"
@@ -20,12 +20,12 @@ const (
 type Case int
 
 const (
-	Camel      Case = iota // CamelCase
-	Kebab                  // kebab-case
+	Camel      Case = iota // camel
+	Kebab                  // kebab
 	LowerCamel             // lowerCamel
-	Snake                  // snake_case (default)
-	Lower                  // lower case
-	Upper                  // UPPER CASE
+	Snake                  // snake (default)
+	Lower                  // lower
+	Upper                  // UPPER
 )
 
 //go:generate stringer -type PadPosition -linecomment

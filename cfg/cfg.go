@@ -100,7 +100,7 @@ func SetPrefix(c any) {
 
 func Sanitize(c any) {
 	SetCase(int(opt.Snake))
-	viper.Set(opt.Clean, true)
+	viper.Set(opt.Tidy, true)
 }
 
 func UseDir(c any) {

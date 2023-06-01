@@ -54,7 +54,7 @@ func (b *Names) Transform() []map[string]string {
 	var names []map[string]string
 	var trans []casing.TransformFunc
 
-	if viper.GetBool(opt.Clean) || viper.GetBool(opt.Asciiify) {
+	if viper.GetBool(opt.Tidy) || viper.GetBool(opt.Asciiify) {
 		trans = append(trans, xform.Asciiify)
 	}
 
