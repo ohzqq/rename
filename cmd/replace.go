@@ -7,7 +7,7 @@ import (
 
 // replaceCmd represents the replace command
 var replaceCmd = &cobra.Command{
-	Use:   "replace regex str file...",
+	Use:   "replace regex str glob|file...",
 	Short: "search and replace text",
 	Args:  cobra.MinimumNArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
