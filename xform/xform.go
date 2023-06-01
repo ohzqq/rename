@@ -23,7 +23,7 @@ func Sanitize(s string) string {
 }
 
 func Pad(num int) string {
-	pad := "%0" + strconv.Itoa(cfg.Padding().Zeroes) + "d"
+	pad := "%0" + strconv.Itoa(cfg.Zeroes()) + "d"
 	return fmt.Sprintf(pad, num)
 }
 

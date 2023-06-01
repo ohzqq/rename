@@ -44,7 +44,7 @@ func (r *Names) SetFiles(files []string) *Names {
 	for _, file := range files {
 		r.Files = append(r.Files, name.New(file))
 	}
-	if cfg.Padding().Zeroes == 0 {
+	if cfg.Zeroes() == 0 {
 		cfg.SetZeroes(len(strconv.Itoa(len(r.Files))))
 	}
 	return r
@@ -58,7 +58,7 @@ func (b *Names) Transform() []map[string]string {
 		trans = append(trans, xform.Asciiify)
 	}
 
-	num := cfg.Padding().Start
+	num := cfg.Start()
 	for _, file := range b.Files {
 		n := file.Transform(trans...)
 
@@ -67,7 +67,7 @@ func (b *Names) Transform() []map[string]string {
 		}
 
 		var padding string
-		if p := cfg.Padding().Zeroes; p >= 0 {
+		if p := cfg.Zeroes(); p >= 0 {
 			padding = xform.Pad(num)
 			num++
 		}

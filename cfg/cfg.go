@@ -8,20 +8,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type PaddingCfg struct {
-	Zeroes   int
-	Start    int
-	Position int
-}
-
-func Padding() *PaddingCfg {
-	return &PaddingCfg{
-		Zeroes:   viper.GetInt(opt.Zeroes),
-		Start:    viper.GetInt(opt.Start),
-		Position: viper.GetInt(opt.Position),
-	}
-}
-
 func Zeroes() int {
 	return viper.GetInt(opt.Zeroes)
 }
@@ -38,12 +24,23 @@ func SetStart(num any) {
 	viper.Set(opt.Start, num)
 }
 
-func Position() opt.PadPosition {
-	return opt.PadPosition(viper.GetInt(opt.Start))
+func Position() string {
+	return viper.GetString(opt.Position)
 }
 
 func SetPosition(num any) {
-	viper.Set(opt.Position, num.(int))
+	var pos string
+	switch n := num.(string); n {
+	case "0":
+		pos = opt.Beginning
+	case "1":
+		pos = opt.BeforeName
+	case "2":
+		pos = opt.AfterName
+	case "3":
+		pos = opt.End
+	}
+	viper.Set(opt.Position, pos)
 }
 
 func Sep() string {
@@ -78,8 +75,19 @@ func Case() string {
 	return viper.GetString(opt.Casing)
 }
 
-func SetCase(c any) {
-	viper.Set(opt.Casing, c)
+func SetCase(cs any) {
+	var pos string
+	switch n := cs.(string); n {
+	case "0":
+		pos = opt.Camel
+	case "1":
+		pos = opt.Kebab
+	case "2":
+		pos = opt.LowerCamel
+	case "3":
+		pos = opt.Snake
+	}
+	viper.Set(opt.Casing, pos)
 }
 
 func Suffix() string {

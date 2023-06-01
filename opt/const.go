@@ -25,12 +25,9 @@ const (
 	Upper      = "upper"
 )
 
-//go:generate stringer -type PadPosition -linecomment
-type PadPosition int
-
 const (
-	Beginning  PadPosition = iota
-	BeforeName             // Before Name
-	AfterName              // After Name
-	End                    // End (default)
+	Beginning  = "beginning"
+	BeforeName = "before name"
+	AfterName  = "after name"
+	End        = "end"
 )
