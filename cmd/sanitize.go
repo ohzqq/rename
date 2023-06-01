@@ -16,14 +16,14 @@ var sanitizeCmd = &cobra.Command{
 		viper.Set("sanitize", true)
 		names := ValidateArgs(args)
 		pre := ui.New(names)
-		//pre.Route("case")
+		pre.Route("Case")
 		program := reactea.NewProgram(pre)
 
 		if err := program.Start(); err != nil {
 			panic(err)
 		}
 
-		//fmt.Println(t)
+		//fmt.Printf("%+V\n", names)
 	},
 }
 

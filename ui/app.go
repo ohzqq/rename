@@ -18,6 +18,8 @@ type App struct {
 	route string
 }
 
+var initialRoute = Name.String()
+
 func New(names *batch.Names) *App {
 	return &App{
 		route:  "preview",
@@ -27,6 +29,7 @@ func New(names *batch.Names) *App {
 }
 
 func (c *App) Route(r string) *App {
+	initialRoute = r
 	c.route = r
 	return c
 }
@@ -40,7 +43,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 		Name.String():    FormRoute(NameForm()...),
 		Menu.String():    initMenu(vertical),
 	}
-	routes["default"] = routes[Name.String()]
+	routes["default"] = routes[c.route]
 	return c.router.Init(routes)
 }
 
@@ -71,18 +74,4 @@ func (c *App) Render(w, h int) string {
 	}
 	views = append(views, c.router.Render(w, h-1))
 	return lipgloss.JoinVertical(lipgloss.Left, views...)
-}
-
-func (c *App) SetNames(names *batch.Names) {
-	c.names = names
-}
-
-type UpdateRouteMsg struct {
-	Route string
-}
-
-func UpdateRoute(r string) tea.Cmd {
-	return func() tea.Msg {
-		return UpdateRouteMsg{Route: r}
-	}
 }
