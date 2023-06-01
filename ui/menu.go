@@ -18,6 +18,36 @@ const (
 	vertical
 )
 
+//go:generate stringer -type MenuEntry
+type MenuEntry int
+
+const (
+	Num MenuEntry = iota
+	Case
+	Replace
+	Misc
+	View
+	Menu
+)
+
+func (m MenuEntry) Key() string {
+	switch m {
+	case Num:
+		return "f1"
+	case Case:
+		return "f2"
+	case Replace:
+		return "f3"
+	case Misc:
+		return "f4"
+	case View:
+		return "f12"
+	case Menu:
+		return "esc"
+	}
+	return ""
+}
+
 func initMenu(dir int) router.RouteInitializer {
 	return func(router.Params) (reactea.SomeComponent, tea.Cmd) {
 		cmpnt := reactea.Componentify[int](MenuRenderer)
@@ -58,18 +88,22 @@ func MenuRenderer(props MenuProps, w, h int) string {
 	}
 }
 
-var menuPrompt = []string{
-	"[F1]Misc",
-	"[F2]Case",
-	"[F3]Num",
-	"[F4]Replace",
-	"[F12]Preview",
-	"[esc]Menu",
+var menuKeyStyle = lipgloss.NewStyle().
+	Background(lipgloss.Color("#afffaf")).
+	Foreground(lipgloss.Color("#262626"))
+
+var menuPrompt = []map[string]string{
+	map[string]string{"[F1]": "num"},
+	map[string]string{"[F2]": "case"},
+	map[string]string{"[F3]": "replace"},
+	map[string]string{"[F4]": "misc"},
+	map[string]string{"[F12]": "preview"},
+	map[string]string{"[esc]": "menu"},
 }
 
 func ValidateBool(v string) error {
 	if v != "y" {
-		return fmt.Errorf("invalide")
+		return fmt.Errorf("invalid")
 	}
 	return nil
 }
