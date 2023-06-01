@@ -106,7 +106,7 @@ func SetPrefix(c any) {
 	viper.Set(opt.Prefix, c)
 }
 
-func Sanitize(c any) {
+func Tidy(c any) {
 	SetCase(opt.Snake)
 	viper.Set(opt.Tidy, true)
 }

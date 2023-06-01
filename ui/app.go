@@ -15,20 +15,19 @@ type App struct {
 	router reactea.Component[router.Props]
 
 	names *batch.Names
-	route string
+	route MenuEntry
 }
 
-var initialRoute = Name.String()
+var initialRoute = Name
 
 func New(names *batch.Names) *App {
 	return &App{
-		route:  "preview",
 		router: router.New(),
 		names:  names,
 	}
 }
 
-func (c *App) Route(r string) *App {
+func (c *App) Route(r MenuEntry) *App {
 	initialRoute = r
 	c.route = r
 	return c
@@ -43,7 +42,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 		Name.String():    FormRoute(NameForm()...),
 		Menu.String():    initMenu(vertical),
 	}
-	routes["default"] = routes[c.route]
+	routes["default"] = routes[c.route.String()]
 	return c.router.Init(routes)
 }
 
@@ -56,9 +55,11 @@ func (c *App) Update(msg tea.Msg) tea.Cmd {
 		case "ctrl+c":
 			return reactea.Destroy
 		default:
-			for _, ent := range menuEntries {
-				if key == ent.Key() {
-					reactea.SetCurrentRoute(ent.String())
+			if initialRoute != View {
+				for _, ent := range menuEntries {
+					if key == ent.Key() {
+						reactea.SetCurrentRoute(ent.String())
+					}
 				}
 			}
 		}
@@ -69,7 +70,7 @@ func (c *App) Update(msg tea.Msg) tea.Cmd {
 
 func (c *App) Render(w, h int) string {
 	var views []string
-	if r := reactea.CurrentRoute(); r != Menu.String() {
+	if r := reactea.CurrentRoute(); r != Menu.String() && initialRoute != View {
 		views = append(views, MenuRenderer(horizontal, w, h))
 	}
 	views = append(views, c.router.Render(w, h-1))

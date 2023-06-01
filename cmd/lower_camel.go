@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/cobra"
@@ -14,8 +12,7 @@ var lowerCamelCmd = &cobra.Command{
 	Short: "names to lowerCamel",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.SetCase(opt.LowerCamel)
-		names := ValidateArgs(args).Transform()
-		fmt.Println(names)
+		View(args)
 	},
 }
 

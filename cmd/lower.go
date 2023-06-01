@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/ohzqq/rename/cfg"
 	"github.com/ohzqq/rename/opt"
 	"github.com/spf13/cobra"
@@ -14,8 +12,7 @@ var lowerCmd = &cobra.Command{
 	Short: "names to lower case",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.SetCase(opt.Lower)
-		names := ValidateArgs(args).Transform()
-		fmt.Println(names)
+		View(args)
 	},
 }
 

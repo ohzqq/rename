@@ -61,9 +61,9 @@ func (m MenuEntry) Render() string {
 	switch {
 	case cur == m.String():
 		fallthrough
-	case cur == "" && m.String() == initialRoute:
+	case cur == "" && m == initialRoute:
 		fallthrough
-	case cur == "default" && m.String() == initialRoute:
+	case cur == "default" && m == initialRoute:
 		return menuKeyActiveStyle.Render(key + m.String())
 	default:
 		return menuKeyInactiveStyle.Render(key) + m.String()

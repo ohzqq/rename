@@ -10,7 +10,7 @@ func NameForm() []*Input {
 	inputs := make([]*Input, 4)
 
 	inputs[0] = NewInput()
-	inputs[0].Init(InputProps{SetValue: cfg.Sanitize})
+	inputs[0].Init(InputProps{SetValue: cfg.Tidy})
 	inputs[0].Prompt = "sanitize (y/n): "
 	inputs[0].Validate = ValidateBool
 

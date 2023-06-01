@@ -4,8 +4,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/londek/reactea"
 	"github.com/ohzqq/rename/batch"
 	"github.com/ohzqq/rename/opt"
+	"github.com/ohzqq/rename/ui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -89,4 +91,17 @@ func ValidateArgs(args []string) *batch.Names {
 		return batch.Files(args)
 	}
 	return batch.New()
+}
+
+func View(args []string) {
+	names := ValidateArgs(args)
+	pre := ui.New(names)
+	if !viper.GetBool("interactive") {
+		pre.Route(ui.View)
+	}
+	program := reactea.NewProgram(pre)
+
+	if err := program.Start(); err != nil {
+		panic(err)
+	}
 }
