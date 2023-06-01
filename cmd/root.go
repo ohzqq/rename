@@ -37,8 +37,8 @@ func init() {
 	viper.SetDefault(opt.Zeroes, -1)
 	viper.SetDefault(opt.Asciiify, false)
 	viper.SetDefault(opt.Tidy, false)
-	viper.SetDefault(opt.Lower.String(), false)
-	viper.SetDefault(opt.Upper.String(), false)
+	viper.SetDefault(opt.Lower, false)
+	viper.SetDefault(opt.Upper, false)
 
 	rootCmd.PersistentFlags().BoolP("interactive", "i", false, "run tui to interactively rename files")
 
@@ -57,7 +57,12 @@ func init() {
 	rootCmd.PersistentFlags().BoolP(opt.Tidy, "t", false, "asciify and remove special characters")
 	viper.BindPFlag(opt.Tidy, rootCmd.PersistentFlags().Lookup(opt.Tidy))
 
-	rootCmd.PersistentFlags().StringP(opt.Casing, "c", opt.Snake.String(), "asciify and remove special characters")
+	rootCmd.PersistentFlags().StringP(opt.Casing, "c", opt.Snake, "choose case [camel, kebab, lowerCamel, snake]")
+	viper.BindPFlag(opt.Casing, rootCmd.PersistentFlags().Lookup(opt.Casing))
+	rootCmd.PersistentFlags().BoolP(opt.Upper, "u", false, "upper case name")
+	viper.BindPFlag(opt.Upper, rootCmd.PersistentFlags().Lookup(opt.Upper))
+	rootCmd.PersistentFlags().BoolP(opt.Lower, "l", false, "lower case name")
+	viper.BindPFlag(opt.Lower, rootCmd.PersistentFlags().Lookup(opt.Lower))
 
 	rootCmd.PersistentFlags().BoolP(opt.Dir, "d", false, "use dir as basename")
 	viper.BindPFlag(opt.Dir, rootCmd.PersistentFlags().Lookup(opt.Dir))

@@ -36,7 +36,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 		View.String():    PreviewRoute(c.names),
 		Num.String():     FormRoute(NewPaddingForm()...),
 		Replace.String(): FormRoute(FindReplaceForm()...),
-		Case.String():    FormRoute(CaseForm()),
+		Case.String():    FormRoute(CaseForm()...),
 		Name.String():    FormRoute(NameForm()...),
 		Menu.String():    initMenu(vertical),
 	}

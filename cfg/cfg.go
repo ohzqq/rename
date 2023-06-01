@@ -74,12 +74,12 @@ func SetReplace(f any) {
 	viper.Set(opt.Replace, f)
 }
 
-func Case() opt.Case {
-	return opt.Case(viper.GetInt(opt.Casing))
+func Case() string {
+	return viper.GetString(opt.Casing)
 }
 
 func SetCase(c any) {
-	viper.Set(opt.Casing, c.(int))
+	viper.Set(opt.Casing, c)
 }
 
 func Suffix() string {
@@ -99,7 +99,7 @@ func SetPrefix(c any) {
 }
 
 func Sanitize(c any) {
-	SetCase(int(opt.Snake))
+	SetCase(opt.Snake)
 	viper.Set(opt.Tidy, true)
 }
 
@@ -113,4 +113,12 @@ func NewName(c any) {
 
 func Name() string {
 	return viper.GetString(opt.Name)
+}
+
+func ToUpper(c any) {
+	viper.Set(opt.Upper, true)
+}
+
+func ToLower(c any) {
+	viper.Set(opt.Lower, true)
 }

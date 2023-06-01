@@ -72,6 +72,14 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	var n string
 	base := name.Base()
 
+	if viper.GetBool(opt.Upper) {
+		trans = append(trans, strings.ToUpper)
+	}
+
+	if viper.GetBool(opt.Lower) {
+		trans = append(trans, strings.ToLower)
+	}
+
 	switch c := cfg.Case(); c {
 	case opt.Camel:
 		n = casing.Camel(base, trans...)
@@ -81,12 +89,6 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 		n = casing.LowerCamel(base, trans...)
 	case opt.Snake:
 		n = casing.Snake(base, trans...)
-	case opt.Lower:
-		trans = append(trans, strings.ToLower)
-		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
-	case opt.Upper:
-		trans = append(trans, strings.ToUpper)
-		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	default:
 		n = casing.Join(casing.Split(base), cfg.Sep(), trans...)
 	}

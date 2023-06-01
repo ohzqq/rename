@@ -16,16 +16,13 @@ const (
 	Name     = "name"
 )
 
-//go:generate stringer -type Case -linecomment
-type Case int
-
 const (
-	Camel      Case = iota // camel
-	Kebab                  // kebab
-	LowerCamel             // lowerCamel
-	Snake                  // snake (default)
-	Lower                  // lower
-	Upper                  // UPPER
+	Camel      = "camel"
+	Kebab      = "kebab"
+	LowerCamel = "lowerCamel"
+	Snake      = "snake"
+	Lower      = "lower"
+	Upper      = "upper"
 )
 
 //go:generate stringer -type PadPosition -linecomment
