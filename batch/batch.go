@@ -44,7 +44,7 @@ func (r *Names) SetFiles(files []string) *Names {
 		r.Files = append(r.Files, name.New(file))
 	}
 	if cfg.Padding().Zeroes == 0 {
-		cfg.Padding().SetZeroes(len(strconv.Itoa(len(r.Files))))
+		cfg.SetZeroes(len(strconv.Itoa(len(r.Files))))
 	}
 	return r
 }
@@ -82,13 +82,13 @@ func (b *Names) Transform() []map[string]string {
 		}
 
 		switch pos := cfg.Padding().Position; name.PadPosition(pos) {
-		case name.PosBeginning:
+		case name.Beginning:
 			n = fmt.Sprint(padding, pre, n, suf)
-		case name.PosBeforeName:
+		case name.BeforeName:
 			n = fmt.Sprint(pre, padding, n, suf)
-		case name.PosEnd:
+		case name.End:
 			n = fmt.Sprint(pre, n, suf, padding)
-		case name.PosAfterName:
+		case name.AfterName:
 			n = fmt.Sprint(pre, n, padding, suf)
 		}
 

@@ -102,9 +102,8 @@ type PadPosition int
 
 //go:generate stringer -trimprefix Pos -type PadPosition
 const (
-	PosBeginning = iota
-	//PosStart PadPosition = iota
-	PosBeforeName
-	PosAfterName
-	PosEnd
+	Beginning = iota
+	BeforeName
+	AfterName
+	End
 )

@@ -33,7 +33,7 @@ func init() {
 	viper.SetDefault("sep", "_")
 	viper.SetDefault("pad.start", 1)
 	viper.SetDefault("casing", name.Snake)
-	viper.SetDefault("pad.position", name.PosEnd)
+	viper.SetDefault("pad.position", name.End)
 	viper.SetDefault("max", -1)
 	viper.SetDefault("pad.zeroes", -1)
 	viper.SetDefault("asciiify", false)

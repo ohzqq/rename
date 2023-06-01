@@ -21,18 +21,6 @@ func Padding() *PaddingCfg {
 	}
 }
 
-func (p *PaddingCfg) SetZeroes(num any) {
-	viper.Set("pad.zeroes", num)
-}
-
-func (p *PaddingCfg) SetStart(num any) {
-	viper.Set("pad.start", num)
-}
-
-func (p *PaddingCfg) SetPosition(num any) {
-	viper.Set("pad.position", num)
-}
-
 func SetZeroes(num any) {
 	viper.Set("pad.zeroes", num)
 }

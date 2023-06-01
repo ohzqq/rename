@@ -24,9 +24,8 @@ const (
 )
 
 const (
-	PosBeginning = iota
-	//PosStart PadPosition = iota
-	PosBeforeName
-	PosAfterName
-	PosEnd
+	Beginning = iota
+	BeforeName
+	AfterName
+	End
 )
