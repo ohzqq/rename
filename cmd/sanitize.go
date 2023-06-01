@@ -7,8 +7,9 @@ import (
 
 // sanitizeCmd represents the sanitize command
 var sanitizeCmd = &cobra.Command{
-	Use:   "sanitize",
+	Use:   "sanitize glob|file...",
 	Short: "sanitize filenames",
+	Args:  cobra.MinimumNArgs(1),
 	Long:  `remove special characters, spaces, etc from file names`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.Tidy(true)

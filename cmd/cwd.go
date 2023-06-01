@@ -9,8 +9,9 @@ import (
 
 // dirCmd represents the cwd command
 var dirCmd = &cobra.Command{
-	Use:   "dir",
+	Use:   "dir glob|file...",
 	Short: "rename files using the cwd or base dir",
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Set(opt.Dir, true)
 		if cfg.Zeroes() == -1 {

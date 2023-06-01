@@ -9,6 +9,7 @@ import (
 // lowerCamelCmd represents the lower command
 var lowerCamelCmd = &cobra.Command{
 	Use:   "lower_camel glob|file...",
+	Args:  cobra.MinimumNArgs(1),
 	Short: "names to lowerCamel",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.SetCase(opt.LowerCamel)

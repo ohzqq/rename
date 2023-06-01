@@ -9,7 +9,8 @@ import (
 // snakeCmd represents the snake command
 var snakeCmd = &cobra.Command{
 	Use:   "snake glob|file...",
-	Short: "names to snake",
+	Short: "names to snake_case",
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.SetCase(opt.Snake)
 		View(args)

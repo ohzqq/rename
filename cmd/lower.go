@@ -9,6 +9,7 @@ import (
 var lowerCmd = &cobra.Command{
 	Use:   "lower glob|file...",
 	Short: "names to lower case",
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.ToLower(true)
 		View(args)

@@ -9,7 +9,8 @@ import (
 // kebabCmd represents the kebab command
 var kebabCmd = &cobra.Command{
 	Use:   "kebab glob|file...",
-	Short: "all files to kebab",
+	Short: "names to kebab-case",
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg.SetCase(opt.Kebab)
 		View(args)
