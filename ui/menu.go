@@ -57,15 +57,16 @@ func (m MenuEntry) Key() string {
 
 func (m MenuEntry) Render() string {
 	cur := reactea.CurrentRoute()
+	key := "[" + m.Key() + "]"
 	switch {
 	case cur == m.String():
 		fallthrough
 	case cur == "" && m == Num:
 		fallthrough
 	case cur == "default" && m == Num:
-		return menuKeyActiveStyle.Render("[" + m.Key() + "]" + m.String())
+		return menuKeyActiveStyle.Render(key + m.String())
 	default:
-		return menuKeyInactiveStyle.Render("["+m.Key()+"]") + m.String()
+		return menuKeyInactiveStyle.Render(key) + m.String()
 	}
 }
 

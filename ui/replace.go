@@ -12,10 +12,12 @@ const (
 func FindReplaceForm() *Form {
 	inputs := make([]*Input, 2)
 
-	inputs[find] = NewInput(cfg.SetFind)
+	inputs[find] = NewInput()
+	inputs[find].Init(InputProps{SetValue: cfg.SetFind})
 	inputs[find].Prompt = "regex search: "
 
-	inputs[replace] = NewInput(cfg.SetReplace)
+	inputs[replace] = NewInput()
+	inputs[replace].Init(InputProps{SetValue: cfg.SetReplace})
 	inputs[replace].Prompt = "replace with: "
 
 	return &Form{

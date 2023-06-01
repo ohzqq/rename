@@ -4,7 +4,8 @@ import "github.com/ohzqq/rename/cfg"
 
 func CaseForm() *Form {
 	inputs := make([]*Input, 1)
-	inputs[0] = NewInput(cfg.SetCase)
+	inputs[0] = NewInput()
+	inputs[0].Init(InputProps{SetValue: cfg.SetCase})
 	inputs[0].Placeholder = "3"
 	inputs[0].Prompt = casePrompt
 	inputs[0].Validate = ValidateInt

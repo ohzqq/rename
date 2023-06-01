@@ -1,3 +1,4 @@
+// Heavily borrowed from: https://github.com/charmbracelet/bubbletea/tree/master/examples/credit-card-form
 package ui
 
 import (
@@ -14,6 +15,13 @@ type Form struct {
 	inputs []*Input
 
 	focused int
+}
+
+func NewForm(inputs []*Input) *Form {
+	return &Form{
+		inputs:  inputs,
+		focused: 0,
+	}
 }
 
 func FormRoute(cmpnt *Form) router.RouteInitializer {
@@ -41,9 +49,9 @@ func (c *Form) Update(msg tea.Msg) tea.Cmd {
 				return nil
 			}
 			c.nextInput()
-		case tea.KeyShiftTab, tea.KeyCtrlP:
+		case tea.KeyShiftTab:
 			c.prevInput()
-		case tea.KeyTab, tea.KeyCtrlN:
+		case tea.KeyTab:
 			c.nextInput()
 		}
 		switch key := msg.String(); key {

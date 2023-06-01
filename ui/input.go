@@ -7,20 +7,31 @@ import (
 )
 
 type Input struct {
+	reactea.BasicComponent
+	reactea.BasicPropfulComponent[InputProps]
+
 	textinput.Model
-	Set func(any)
+	SetValue func(any)
 }
 
-func NewInput(set func(any)) *Input {
+type InputProps struct {
+	SetValue func(any)
+}
+
+func NewInput() *Input {
 	return &Input{
 		Model: textinput.New(),
-		Set:   set,
 	}
+}
+
+func (c *Input) Init(props InputProps) tea.Cmd {
+	c.UpdateProps(props)
+	return nil
 }
 
 func (c *Input) Save() {
 	if val := c.Model.Value(); val != "" {
-		c.Set(val)
+		c.Props().SetValue(val)
 	}
 }
 
@@ -38,4 +49,8 @@ func (c *Input) Update(msg tea.Msg) (*Input, tea.Cmd) {
 	c.Model, cmd = c.Model.Update(msg)
 
 	return c, cmd
+}
+
+func (c *Input) Render(int, int) string {
+	return c.Model.View()
 }

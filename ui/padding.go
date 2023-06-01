@@ -14,7 +14,8 @@ const (
 
 func NewPaddingForm() *Form {
 	inputs := make([]*Input, 3)
-	inputs[zeroes] = NewInput(cfg.SetZeroes)
+	inputs[zeroes] = NewInput()
+	inputs[zeroes].Init(InputProps{SetValue: cfg.SetZeroes})
 	inputs[zeroes].Placeholder = "0"
 	if p := cfg.Padding().Zeroes; p > 0 {
 		inputs[zeroes].Placeholder = strconv.Itoa(p)
@@ -23,13 +24,15 @@ func NewPaddingForm() *Form {
 	inputs[zeroes].Prompt = "zeroes: "
 	inputs[zeroes].Validate = ValidateInt
 
-	inputs[start] = NewInput(cfg.SetStart)
+	inputs[start] = NewInput()
+	inputs[start].Init(InputProps{SetValue: cfg.SetStart})
 	inputs[start].Placeholder = strconv.Itoa(cfg.Padding().Start)
 	//inputs[start].Width = 5
 	inputs[start].Prompt = "start: "
 	inputs[start].Validate = ValidateInt
 
-	inputs[position] = NewInput(cfg.SetPosition)
+	inputs[position] = NewInput()
+	inputs[position].Init(InputProps{SetValue: cfg.SetPosition})
 	inputs[position].Placeholder = strconv.Itoa(cfg.Padding().Position)
 	//inputs[position].Width = 5
 	inputs[position].Prompt = padMenu
