@@ -74,8 +74,8 @@ func SetReplace(f any) {
 	viper.Set(opt.Replace, f)
 }
 
-func Case() int {
-	return viper.GetInt(opt.Casing)
+func Case() opt.Case {
+	return opt.Case(viper.GetInt(opt.Casing))
 }
 
 func SetCase(c any) {
@@ -99,6 +99,7 @@ func SetPrefix(c any) {
 }
 
 func Sanitize(c any) {
+	SetCase(int(opt.Snake))
 	viper.Set(opt.Clean, true)
 }
 

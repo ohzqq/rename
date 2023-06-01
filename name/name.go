@@ -72,7 +72,7 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	var n string
 	base := name.Base()
 
-	switch c := cfg.Case(); opt.Case(c) {
+	switch c := cfg.Case(); c {
 	case opt.Camel:
 		n = casing.Camel(base, trans...)
 	case opt.Kebab:

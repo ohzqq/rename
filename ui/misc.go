@@ -6,7 +6,7 @@ import (
 	"github.com/ohzqq/rename/cfg"
 )
 
-func DefaultForm() []*Input {
+func NameForm() []*Input {
 	inputs := make([]*Input, 4)
 
 	inputs[0] = NewInput()
