@@ -82,7 +82,7 @@ func (b *Names) Transform() []map[string]string {
 		}
 
 		switch pos := cfg.Padding().Position; name.PadPosition(pos) {
-		case name.PosStart:
+		case name.PosBeginning:
 			n = fmt.Sprint(padding, pre, n, suf)
 		case name.PosBeforeName:
 			n = fmt.Sprint(pre, padding, n, suf)

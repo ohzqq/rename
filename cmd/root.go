@@ -79,17 +79,3 @@ func ValidateArgs(args []string) *batch.Names {
 	}
 	return batch.New()
 }
-
-const (
-	Clean    = "clean"
-	Find     = "find"
-	Replace  = "Replace"
-	Suffix   = "Suffix"
-	prefix   = "prefix"
-	cwd      = "cwd"
-	casing   = "casing"
-	start    = "pad.start"
-	zeroes   = "pad.zeroes"
-	position = "pad.position"
-	sep      = "sep"
-)
