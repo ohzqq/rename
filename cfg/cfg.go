@@ -49,6 +49,10 @@ func Sep() string {
 	return viper.GetString("sep")
 }
 
+func SetSep(c any) {
+	viper.Set("sep", c)
+}
+
 func Find() *regexp.Regexp {
 	regex, err := regexp.Compile(viper.GetString("find"))
 	if err != nil {
@@ -87,4 +91,12 @@ func SetPrefix(c any) {
 
 func Sanitize(c any) {
 	viper.Set("sanitize", true)
+}
+
+func UseCWD(c any) {
+	viper.Set("cwd", true)
+}
+
+func NewName(c any) {
+	viper.Set("name", c)
 }

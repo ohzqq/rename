@@ -37,7 +37,7 @@ func (c *App) Init(reactea.NoProps) tea.Cmd {
 		Num.String():     FormRoute(NewPaddingForm()...),
 		Replace.String(): FormRoute(FindReplaceForm()...),
 		Case.String():    FormRoute(CaseForm()),
-		Misc.String():    FormRoute(MiscForm()...),
+		Misc.String():    FormRoute(PrefixSuffixForm()...),
 		Menu.String():    initMenu(vertical),
 	}
 	routes["default"] = routes[Num.String()]
