@@ -78,13 +78,13 @@ func Case() string {
 func SetCase(cs any) {
 	var pos string
 	switch n := cs.(string); n {
-	case "0":
+	case "0", opt.Camel:
 		pos = opt.Camel
-	case "1":
+	case "1", opt.Kebab:
 		pos = opt.Kebab
-	case "2":
+	case "2", opt.LowerCamel:
 		pos = opt.LowerCamel
-	case "3":
+	case "3", opt.Snake:
 		pos = opt.Snake
 	}
 	viper.Set(opt.Casing, pos)
