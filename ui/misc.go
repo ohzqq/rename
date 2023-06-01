@@ -7,30 +7,24 @@ import (
 )
 
 func DefaultForm() []*Input {
-	inputs := make([]*Input, 3)
+	inputs := make([]*Input, 4)
 
 	inputs[0] = NewInput()
-	inputs[0].Init(InputProps{SetValue: cfg.SetPrefix})
-	inputs[0].Prompt = "prefix: "
+	inputs[0].Init(InputProps{SetValue: cfg.Sanitize})
+	inputs[0].Prompt = "sanitize (y/n): "
+	inputs[0].Validate = ValidateBool
 
 	inputs[1] = NewInput()
-	inputs[1].Init(InputProps{SetValue: cfg.Sanitize})
-	inputs[1].Prompt = "sanitize (y/n): "
-	inputs[1].Validate = ValidateBool
+	inputs[1].Init(InputProps{SetValue: cfg.NewName})
+	inputs[1].Prompt = "new name: "
 
-	return inputs
-}
+	inputs[2] = NewInput()
+	inputs[2].Init(InputProps{SetValue: cfg.SetPrefix})
+	inputs[2].Prompt = "prefix: "
 
-func PrefixSuffixForm() []*Input {
-	inputs := make([]*Input, 3)
-
-	inputs[0] = NewInput()
-	inputs[0].Init(InputProps{SetValue: cfg.SetPrefix})
-	inputs[0].Prompt = "prefix: "
-
-	inputs[1] = NewInput()
-	inputs[1].Init(InputProps{SetValue: cfg.SetSuffix})
-	inputs[1].Prompt = "suffix: "
+	inputs[3] = NewInput()
+	inputs[3].Init(InputProps{SetValue: cfg.SetSuffix})
+	inputs[3].Prompt = "suffix: "
 
 	return inputs
 }

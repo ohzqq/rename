@@ -6,22 +6,26 @@ const (
 	Replace  = "replace"
 	Suffix   = "suffix"
 	Prefix   = "prefix"
-	CWD      = "cwd"
+	Dir      = "dir"
 	Casing   = "casing"
-	Start    = "start"
+	Start    = "min"
 	Zeroes   = "zeroes"
 	Position = "position"
 	Sep      = "sep"
 	Asciiify = "asciiify"
+	Name     = "name"
 )
 
+//go:generate stringer -type Case -linecomment
+type Case int
+
 const (
-	Camel = iota
-	Kebab
-	LowerCamel
-	Snake
-	Lower
-	Upper
+	Camel      Case = iota // CamelCase
+	Kebab                  // kebab-case
+	LowerCamel             // lowerCamel
+	Snake                  // snake_case (default)
+	Lower                  // lower case
+	Upper                  // UPPER CASE
 )
 
 //go:generate stringer -type PadPosition -linecomment
@@ -31,5 +35,5 @@ const (
 	Beginning  PadPosition = iota
 	BeforeName             // Before Name
 	AfterName              // After Name
-	End
+	End                    // End (default)
 )

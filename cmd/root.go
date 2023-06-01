@@ -43,7 +43,10 @@ func init() {
 	rootCmd.PersistentFlags().String(opt.Sep, "", "separator for joining words")
 	viper.BindPFlag(opt.Sep, rootCmd.PersistentFlags().Lookup(opt.Sep))
 
-	rootCmd.PersistentFlags().Int(opt.Start, 1, "staring num for enumeration")
+	rootCmd.PersistentFlags().StringP(opt.Name, "n", "", "use as basename")
+	viper.BindPFlag(opt.Name, rootCmd.PersistentFlags().Lookup(opt.Name))
+
+	rootCmd.PersistentFlags().IntP(opt.Start, "m", 1, "min num for enumeration")
 	viper.BindPFlag(opt.Start, rootCmd.PersistentFlags().Lookup(opt.Start))
 
 	rootCmd.PersistentFlags().IntP(opt.Zeroes, "z", -1, "zero pad files")
@@ -52,8 +55,8 @@ func init() {
 	rootCmd.PersistentFlags().BoolP(opt.Clean, "c", false, "asciify and remove characters")
 	viper.BindPFlag(opt.Clean, rootCmd.PersistentFlags().Lookup(opt.Clean))
 
-	rootCmd.PersistentFlags().Bool(opt.CWD, false, "use cwd as basename")
-	viper.BindPFlag(opt.CWD, rootCmd.PersistentFlags().Lookup(opt.CWD))
+	rootCmd.PersistentFlags().BoolP(opt.Dir, "d", false, "use dir as basename")
+	viper.BindPFlag(opt.Dir, rootCmd.PersistentFlags().Lookup(opt.Dir))
 
 	rootCmd.PersistentFlags().StringP(opt.Prefix, "p", "", "add a prefix")
 	viper.BindPFlag(opt.Prefix, rootCmd.PersistentFlags().Lookup(opt.Prefix))
@@ -62,7 +65,7 @@ func init() {
 
 	rootCmd.PersistentFlags().StringP(opt.Find, "f", "", "find regex")
 	viper.BindPFlag(opt.Find, rootCmd.PersistentFlags().Lookup(opt.Find))
-	rootCmd.PersistentFlags().StringP(opt.Replace, "r", "", "replace regex")
+	rootCmd.PersistentFlags().StringP(opt.Replace, "r", "", "replacement string")
 	viper.BindPFlag(opt.Replace, rootCmd.PersistentFlags().Lookup(opt.Replace))
 	rootCmd.MarkFlagsRequiredTogether(opt.Find, opt.Replace)
 }

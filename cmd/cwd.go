@@ -14,7 +14,7 @@ var cwdCmd = &cobra.Command{
 	Use:   "cwd",
 	Short: "rename files using the cwd or base dir",
 	Run: func(cmd *cobra.Command, args []string) {
-		viper.Set(opt.CWD, true)
+		viper.Set(opt.Dir, true)
 		if cfg.Zeroes() == -1 {
 			cfg.SetZeroes(0)
 		}

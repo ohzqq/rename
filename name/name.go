@@ -51,7 +51,10 @@ func (fn *Name) Parse(n string) error {
 }
 
 func (fn *Name) Base() string {
-	if viper.GetBool(opt.CWD) {
+	if viper.IsSet("name") {
+		return cfg.Name()
+	}
+	if viper.GetBool(opt.Dir) {
 		if fn.Dir != "" {
 			return filepath.Base(fn.Dir)
 		} else {
@@ -69,7 +72,7 @@ func (name *Name) Transform(trans ...casing.TransformFunc) string {
 	var n string
 	base := name.Base()
 
-	switch c := cfg.Case(); c {
+	switch c := cfg.Case(); opt.Case(c) {
 	case opt.Camel:
 		n = casing.Camel(base, trans...)
 	case opt.Kebab:

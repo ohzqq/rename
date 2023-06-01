@@ -8,17 +8,17 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
-	_ = x[Num-0]
-	_ = x[Case-1]
-	_ = x[Replace-2]
-	_ = x[Misc-3]
+	_ = x[Name-0]
+	_ = x[Num-1]
+	_ = x[Case-2]
+	_ = x[Replace-3]
 	_ = x[View-4]
 	_ = x[Menu-5]
 }
 
-const _MenuEntry_name = "NumCaseReplaceMiscViewMenu"
+const _MenuEntry_name = "NameNumCaseReplaceViewMenu"
 
-var _MenuEntry_index = [...]uint8{0, 3, 7, 14, 18, 22, 26}
+var _MenuEntry_index = [...]uint8{0, 4, 7, 11, 18, 22, 26}
 
 func (i MenuEntry) String() string {
 	if i < 0 || i >= MenuEntry(len(_MenuEntry_index)-1) {

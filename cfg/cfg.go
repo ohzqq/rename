@@ -43,7 +43,7 @@ func Position() opt.PadPosition {
 }
 
 func SetPosition(num any) {
-	viper.Set(opt.Position, num)
+	viper.Set(opt.Position, num.(int))
 }
 
 func Sep() string {
@@ -79,7 +79,7 @@ func Case() int {
 }
 
 func SetCase(c any) {
-	viper.Set(opt.Casing, c)
+	viper.Set(opt.Casing, c.(int))
 }
 
 func Suffix() string {
@@ -102,10 +102,14 @@ func Sanitize(c any) {
 	viper.Set(opt.Clean, true)
 }
 
-func UseCWD(c any) {
-	viper.Set(opt.CWD, true)
+func UseDir(c any) {
+	viper.Set(opt.Dir, true)
 }
 
 func NewName(c any) {
-	viper.Set("name", c)
+	viper.Set(opt.Name, c)
+}
+
+func Name() string {
+	return viper.GetString(opt.Name)
 }

@@ -20,32 +20,32 @@ const (
 type MenuEntry int
 
 const (
-	Num MenuEntry = iota
+	Name MenuEntry = iota
+	Num
 	Case
 	Replace
-	Misc
 	View
 	Menu
 )
 
 var menuEntries = []MenuEntry{
+	Name,
 	Num,
 	Case,
 	Replace,
-	Misc,
 	View,
 	Menu,
 }
 
 func (m MenuEntry) Key() string {
 	switch m {
-	case Num:
+	case Name:
 		return "f1"
-	case Case:
+	case Num:
 		return "f2"
-	case Replace:
+	case Case:
 		return "f3"
-	case Misc:
+	case Replace:
 		return "f4"
 	case View:
 		return "f12"
@@ -61,9 +61,9 @@ func (m MenuEntry) Render() string {
 	switch {
 	case cur == m.String():
 		fallthrough
-	case cur == "" && m == Num:
+	case cur == "" && m == Name:
 		fallthrough
-	case cur == "default" && m == Num:
+	case cur == "default" && m == Name:
 		return menuKeyActiveStyle.Render(key + m.String())
 	default:
 		return menuKeyInactiveStyle.Render(key) + m.String()
@@ -98,12 +98,3 @@ var menuKeyActiveStyle = lipgloss.NewStyle().
 
 var menuKeyInactiveStyle = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("#afffaf"))
-
-var menuPrompt = []map[string]string{
-	map[string]string{"[F1]": "num"},
-	map[string]string{"[F2]": "case"},
-	map[string]string{"[F3]": "replace"},
-	map[string]string{"[F4]": "misc"},
-	map[string]string{"[F12]": "preview"},
-	map[string]string{"[esc]": "menu"},
-}
